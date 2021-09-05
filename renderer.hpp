@@ -26,6 +26,9 @@ struct Renderer {
     void blit(Image& image, Vec2f pos, IntRect src, float alpha = 1.0f);
     void blit(Image& image, Vec2f pos, float alpha = 1.0f);
 
+    int width() const;
+    int height() const;
+
 private:
     Tigr* m_target = nullptr;
 };

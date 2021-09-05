@@ -24,4 +24,8 @@ inline Color RED{0xff, 0, 0, 0xff};
 inline Color GREEN{0, 0xff, 0, 0xff};
 inline Color BLUE{0, 0, 0xff, 0xff};
 
+inline bool operator==(const Color& a, const Color& b) {
+    return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;
+}
+
 }  // namespace htn

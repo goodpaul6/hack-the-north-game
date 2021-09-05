@@ -39,4 +39,7 @@ void Renderer::blit(Image& image, Vec2f pos, float alpha) {
     blit(image, pos, {0, 0, image.m_data->w, image.m_data->h}, alpha);
 }
 
+int Renderer::width() const { return m_target->w; }
+int Renderer::height() const { return m_target->h; }
+
 }  // namespace htn
