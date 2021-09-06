@@ -1,6 +1,22 @@
 #include "physics_system.hpp"
 
+#include <algorithm>
+
 #include "world.hpp"
+
+namespace {
+
+float step(float d) { return std::min(std::abs(d), 1.0f) * (d < 0 ? -1 : 1); }
+
+bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
+    if (a.platformer && a.body->vel.y > 0) {
+        a.platformer->on_ground = true;
+    }
+
+    return true;
+}
+
+}  // namespace
 
 namespace htn {
 
@@ -38,6 +54,12 @@ void simulate_physics(World& world, Vec2f grav_accel) {
             continue;
         }
 
+        if (!a.body->solid) {
+            a.body->rect.x += a.body->vel.x;
+            a.body->rect.y += a.body->vel.y;
+            continue;
+        }
+
         if (a.platformer) {
             a.platformer->on_ground = false;
         }
@@ -49,8 +71,19 @@ void simulate_physics(World& world, Vec2f grav_accel) {
         auto* b = collide_rect(a, new_rect);
 
         if (b) {
-            new_rect.x = a.body->rect.x;
-            a.body->vel.x = 0;
+            for (float d = 0; d < a.body->vel.x; d += step(a.body->vel.x)) {
+                float prev_x = new_rect.x;
+                new_rect.x = a.body->rect.x + d;
+
+                if (b = collide_rect(a, new_rect)) {
+                    new_rect.x = prev_x;
+                    break;
+                }
+            }
+
+            if (handle_collision(a, *b, true)) {
+                a.body->vel.x = 0;
+            }
         }
 
         new_rect.y += a.body->vel.y;
@@ -58,12 +91,19 @@ void simulate_physics(World& world, Vec2f grav_accel) {
         b = collide_rect(a, new_rect);
 
         if (b) {
-            if (a.platformer && a.body->vel.y > 0) {
-                a.platformer->on_ground = true;
+            for (float d = 0; d < a.body->vel.y; d += step(a.body->vel.y)) {
+                float prev_y = new_rect.y;
+                new_rect.y = a.body->rect.y + d;
+
+                if (b = collide_rect(a, new_rect)) {
+                    new_rect.y = prev_y;
+                    break;
+                }
             }
 
-            new_rect.y = a.body->rect.y;
-            a.body->vel.y = 0;
+            if (handle_collision(a, *b, false)) {
+                a.body->vel.y = 0;
+            }
         }
 
         a.body->rect = new_rect;

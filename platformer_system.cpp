@@ -31,11 +31,11 @@ void handle_input(World& world, Input& input) {
         }
 
         if (!e.platformer->on_ground) {
-            e.flipbook->play(e.platformer->jump_fb);
+            e.flipbook->play(e.platformer->jump_fb, false);
         } else if (move) {
-            e.flipbook->play(e.platformer->run_fb);
+            e.flipbook->play(e.platformer->run_fb, false);
         } else {
-            e.flipbook->play(e.platformer->idle_fb);
+            e.flipbook->play(e.platformer->idle_fb, false);
         }
 
         if (e.platformer->on_ground && (input.key_held(Input::UP) || input.key_held('W'))) {

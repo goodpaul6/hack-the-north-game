@@ -20,7 +20,7 @@ void update_flipbooks(World& world, float dt) {
         if (e.flipbook->data->loop) {
             frame %= e.flipbook->data->frames.size();
         } else {
-            frame = std::min(frame, e.flipbook->data->frames.size());
+            frame = std::min(frame, e.flipbook->data->frames.size() - 1);
         }
 
         e.image->src = e.flipbook->data->frames[frame];

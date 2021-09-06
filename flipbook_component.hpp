@@ -11,7 +11,7 @@ struct FlipbookComponent {
 
     float elapsed = 0;
 
-    void play(std::shared_ptr<Flipbook> data);
+    void play(std::shared_ptr<Flipbook> data, bool reset);
 };
 
 }  // namespace htn
