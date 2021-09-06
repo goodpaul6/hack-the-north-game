@@ -27,7 +27,7 @@ system).
 - [x] Runtime tweaker system
 - [x] Flipping images
 - [x] Flipbook animation
+- [ ] Bullets
 - [ ] Tilemaps
 - [ ] Audio playback
 - [ ] Image-based level loading
-- [ ] Bullets

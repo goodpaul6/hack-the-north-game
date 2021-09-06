@@ -8,6 +8,7 @@
 namespace htn {
 
 struct Flipbook {
+    bool loop = true;
     float frame_time = 0;
     std::vector<IntRect> frames;
 };

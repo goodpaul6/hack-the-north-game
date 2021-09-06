@@ -1,5 +1,7 @@
 #include "flipbook_system.hpp"
 
+#include <algorithm>
+
 #include "flipbook_component.hpp"
 #include "world.hpp"
 
@@ -11,10 +13,15 @@ void update_flipbooks(World& world, float dt) {
             continue;
         }
 
-        int frame = e.flipbook->data->frame_time > 0
-                        ? (static_cast<int>(e.flipbook->elapsed / e.flipbook->data->frame_time) %
-                           e.flipbook->data->frames.size())
-                        : 0;
+        size_t frame = e.flipbook->data->frame_time > 0
+                           ? static_cast<size_t>(e.flipbook->elapsed / e.flipbook->data->frame_time)
+                           : 0;
+
+        if (e.flipbook->data->loop) {
+            frame %= e.flipbook->data->frames.size();
+        } else {
+            frame = std::min(frame, e.flipbook->data->frames.size());
+        }
 
         e.image->src = e.flipbook->data->frames[frame];
 
