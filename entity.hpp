@@ -5,6 +5,7 @@
 
 #include "body_component.hpp"
 #include "image_component.hpp"
+#include "platformer_component.hpp"
 
 namespace htn {
 
@@ -18,6 +19,7 @@ struct Entity {
     std::optional<Vec2f> fixed_pos;
     std::optional<BodyComponent> body;
     std::optional<ImageComponent> image;
+    std::optional<PlatformerComponent> platformer;
 
     Entity();
 

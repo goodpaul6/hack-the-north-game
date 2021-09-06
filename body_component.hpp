@@ -16,8 +16,6 @@ struct BodyComponent {
 
     FloatRect rect;
     Vec2f vel;
-
-    std::function<bool(World& world, Entity& me, Entity& other, bool x_axis)> on_collide;
 };
 
 }  // namespace htn

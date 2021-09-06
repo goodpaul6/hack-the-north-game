@@ -12,12 +12,14 @@ endif
 HEADERS = color.hpp window.hpp renderer.hpp image.hpp \
 		  input.hpp time.hpp tigr.h rect.hpp vec2.hpp \
 		  world.hpp body_component.hpp image_component.hpp \
-		  physics_system.hpp render_system.hpp entity.hpp
+		  physics_system.hpp render_system.hpp entity.hpp \
+		  platformer_system.hpp platformer_component.hpp \
+		  tweaker.hpp
 
 SOURCES = window.cpp renderer.cpp image.cpp input.cpp \
 		  image_component.cpp time.cpp tigr.c main.cpp \
 		  world.cpp physics_system.cpp render_system.cpp \
-		  entity.cpp
+		  entity.cpp platformer_system.cpp tweaker.cpp
 
 game: $(HEADERS) $(SOURCES)
 	g++ $(SOURCES) -g -o $@ -std=c++17 $(LDFLAGS)

@@ -38,13 +38,17 @@ void simulate_physics(World& world, Vec2f grav_accel) {
             continue;
         }
 
+        if (a.platformer) {
+            a.platformer->on_ground = false;
+        }
+
         auto new_rect = a.body->rect;
 
         new_rect.x += a.body->vel.x;
 
         auto* b = collide_rect(a, new_rect);
 
-        if (b && (!a.body->on_collide || a.body->on_collide(world, a, *b, true))) {
+        if (b) {
             new_rect.x = a.body->rect.x;
             a.body->vel.x = 0;
         }
@@ -53,7 +57,11 @@ void simulate_physics(World& world, Vec2f grav_accel) {
 
         b = collide_rect(a, new_rect);
 
-        if (b && (!a.body->on_collide || a.body->on_collide(world, a, *b, false))) {
+        if (b) {
+            if (a.platformer && a.body->vel.y > 0) {
+                a.platformer->on_ground = true;
+            }
+
             new_rect.y = a.body->rect.y;
             a.body->vel.y = 0;
         }
