@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include "flipbook_system.hpp"
 #include "image.hpp"
 #include "input.hpp"
 #include "physics_system.hpp"
@@ -27,13 +28,27 @@ int main(int argc, char** argv) {
     auto player_id = Entity::INVALID_ID;
 
     {
+        auto idle_fb = std::make_shared<Flipbook>();
+
+        idle_fb->frames = {{0, 0, 16, 16}};
+
+        auto run_fb = std::make_shared<Flipbook>();
+
+        run_fb->frame_time = 0.13f;
+        run_fb->frames = {{0, 0, 16, 16}, {16, 0, 16, 16}};
+
+        auto jump_fb = std::make_shared<Flipbook>();
+
+        jump_fb->frames = {{16, 0, 16, 16}};
+
         Entity player;
 
         player_id = player.id();
 
         player.image = {std::make_shared<Image>("data/bunny.png")};
         player.body = {true, true, {0, 0, 16, 16}};
-        player.platformer = {false, false};
+        player.platformer = {false, false, idle_fb, std::move(run_fb), std::move(jump_fb)};
+        player.flipbook = {idle_fb};
 
         Entity block;
 
@@ -52,6 +67,8 @@ int main(int argc, char** argv) {
         Tweaker::instance().update();
 
         float seconds_since_last_frame = seconds_since_last_call();
+
+        update_flipbooks(world, seconds_since_last_frame);
 
         accum_seconds += seconds_since_last_frame;
 

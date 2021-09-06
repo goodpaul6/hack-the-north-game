@@ -25,7 +25,9 @@ system).
 - [x] Entity system
 - [x] Simplified 2D physics
 - [x] Runtime tweaker system
-- [ ] Sprite animation
+- [x] Flipping images
+- [x] Flipbook animation
 - [ ] Tilemaps
 - [ ] Audio playback
 - [ ] Image-based level loading
+- [ ] Bullets

@@ -8,7 +8,7 @@ namespace htn {
 
 void handle_input(World& world, Input& input) {
     for (auto& e : world) {
-        if (!e.platformer || !e.body) {
+        if (!e.platformer || !e.body || !e.image) {
             continue;
         }
 
@@ -16,19 +16,33 @@ void handle_input(World& world, Input& input) {
 
         float speed = HTN_TWEAK(2);
 
+        bool move = false;
+
         if (input.key_held(Input::LEFT) || input.key_held('A')) {
             e.body->vel.x -= speed;
             e.platformer->facing_left = true;
+            move = true;
         }
 
         if (input.key_held(Input::RIGHT) || input.key_held('D')) {
             e.body->vel.x += speed;
             e.platformer->facing_left = false;
+            move = true;
+        }
+
+        if (!e.platformer->on_ground) {
+            e.flipbook->play(e.platformer->jump_fb);
+        } else if (move) {
+            e.flipbook->play(e.platformer->run_fb);
+        } else {
+            e.flipbook->play(e.platformer->idle_fb);
         }
 
         if (e.platformer->on_ground && (input.key_held(Input::UP) || input.key_held('W'))) {
             e.body->vel.y -= HTN_TWEAK(3);
         }
+
+        e.image->flip = e.platformer->facing_left;
     }
 }
 

@@ -23,8 +23,8 @@ struct Renderer {
 
     void line(Vec2f a, Vec2f b, Color c);
 
-    void blit(Image& image, Vec2f pos, IntRect src, float alpha = 1.0f);
-    void blit(Image& image, Vec2f pos, float alpha = 1.0f);
+    void blit(Image& image, Vec2f pos, IntRect src, float alpha = 1.0f, bool flip = false);
+    void blit(Image& image, Vec2f pos, float alpha = 1.0f, bool flip = false);
 
     int width() const;
     int height() const;

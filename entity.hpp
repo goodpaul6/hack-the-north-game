@@ -4,6 +4,7 @@
 #include <optional>
 
 #include "body_component.hpp"
+#include "flipbook_component.hpp"
 #include "image_component.hpp"
 #include "platformer_component.hpp"
 
@@ -19,6 +20,7 @@ struct Entity {
     std::optional<Vec2f> fixed_pos;
     std::optional<BodyComponent> body;
     std::optional<ImageComponent> image;
+    std::optional<FlipbookComponent> flipbook;
     std::optional<PlatformerComponent> platformer;
 
     Entity();

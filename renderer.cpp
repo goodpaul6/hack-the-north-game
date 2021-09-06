@@ -29,14 +29,27 @@ void Renderer::line(Vec2f a, Vec2f b, Color c) {
              static_cast<int>(b.y), c);
 }
 
-void Renderer::blit(Image& image, Vec2f pos, IntRect src, float alpha) {
-    tigrBlitAlpha(m_target, image.m_data, static_cast<int>(pos.x), static_cast<int>(pos.y),
-                  static_cast<int>(src.x), static_cast<int>(src.y), static_cast<int>(src.w),
-                  static_cast<int>(src.h), alpha);
+void Renderer::blit(Image& image, Vec2f pos, IntRect src, float alpha, bool flip) {
+    if (flip) {
+        Image flipped_image_region{src.w, src.h};
+
+        for (int y = 0; y < src.h; ++y) {
+            for (int x = 0; x < src.w; ++x) {
+                flipped_image_region.m_data->pix[x + y * src.w] =
+                    image.m_data->pix[(src.x + src.w - x - 1) + (src.y + y) * image.width()];
+            }
+        }
+
+        tigrBlitAlpha(m_target, flipped_image_region.m_data, static_cast<int>(pos.x),
+                      static_cast<int>(pos.y), 0, 0, src.w, src.h, alpha);
+    } else {
+        tigrBlitAlpha(m_target, image.m_data, static_cast<int>(pos.x), static_cast<int>(pos.y),
+                      src.x, src.y, src.w, src.h, alpha);
+    }
 }
 
-void Renderer::blit(Image& image, Vec2f pos, float alpha) {
-    blit(image, pos, {0, 0, image.m_data->w, image.m_data->h}, alpha);
+void Renderer::blit(Image& image, Vec2f pos, float alpha, bool flip) {
+    blit(image, pos, {0, 0, image.m_data->w, image.m_data->h}, alpha, flip);
 }
 
 int Renderer::width() const { return m_target->w; }

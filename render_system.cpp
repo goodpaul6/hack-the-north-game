@@ -46,7 +46,7 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
             r.rect({pos.x, pos.y, e.body->rect.w, e.body->rect.h}, RED);
         }
 
-        r.blit(*e.image->image, pos, e.image->src, e.image->alpha);
+        r.blit(*e.image->image, pos, e.image->src, e.image->alpha, e.image->flip);
     }
 }
 
