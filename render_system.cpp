@@ -1,12 +1,14 @@
 #include "render_system.hpp"
 
+#include "color.hpp"
 #include "renderer.hpp"
 #include "tweaker.hpp"
 #include "world.hpp"
 
 namespace htn {
 
-void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id) {
+void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
+                          bool debug_bodies) {
     if (auto* e = world.find(camera_focus_id)) {
         Vec2f offset;
 
@@ -19,7 +21,7 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id)
         offset -= Vec2f{r.width() / 2, r.height() / 2};
 
         if (m_last_camera_offset) {
-            *m_last_camera_offset += (offset - *m_last_camera_offset) * HTN_TWEAK_FLOAT(0.1);
+            *m_last_camera_offset += (offset - *m_last_camera_offset) * HTN_TWEAK(0.1);
         } else {
             m_last_camera_offset = offset;
         }
@@ -39,6 +41,10 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id)
         }
 
         pos -= m_last_camera_offset.value_or(Vec2f{});
+
+        if (debug_bodies && e.body) {
+            r.rect({pos.x, pos.y, e.body->rect.w, e.body->rect.h}, RED);
+        }
 
         r.blit(*e.image->image, pos, e.image->src, e.image->alpha);
     }

@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 
         renderer.clear(DARK_GREY);
 
-        render_system.render(world, renderer, player_id);
+        render_system.render(world, renderer, player_id, HTN_TWEAK(0) > 0);
 
         window.update();
     }

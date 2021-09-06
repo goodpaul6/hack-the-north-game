@@ -24,6 +24,7 @@ system).
 - [x] Image loading and display
 - [x] Entity system
 - [x] Simplified 2D physics
+- [x] Runtime tweaker system
 - [ ] Sprite animation
 - [ ] Tilemaps
 - [ ] Audio playback

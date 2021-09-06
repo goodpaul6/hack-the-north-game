@@ -14,7 +14,7 @@ void handle_input(World& world, Input& input) {
 
         e.body->vel.x = 0;
 
-        float speed = HTN_TWEAK_FLOAT(2);
+        float speed = HTN_TWEAK(2);
 
         if (input.key_held(Input::LEFT) || input.key_held('A')) {
             e.body->vel.x -= speed;
@@ -27,7 +27,7 @@ void handle_input(World& world, Input& input) {
         }
 
         if (e.platformer->on_ground && (input.key_held(Input::UP) || input.key_held('W'))) {
-            e.body->vel.y -= HTN_TWEAK_FLOAT(3);
+            e.body->vel.y -= HTN_TWEAK(3);
         }
     }
 }
