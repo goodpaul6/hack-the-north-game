@@ -1,4 +1,6 @@
+#include "assets.hpp"
 #include "entity.hpp"
+#include "entity_factory.hpp"
 #include "flipbook_system.hpp"
 #include "image.hpp"
 #include "input.hpp"
@@ -21,6 +23,7 @@ int main(int argc, char** argv) {
     Window window{"Game", WIDTH, HEIGHT};
     Renderer renderer{window};
     Input input{window};
+    Assets assets;
     World world;
 
     RenderSystem render_system;
@@ -28,35 +31,13 @@ int main(int argc, char** argv) {
     auto player_id = Entity::INVALID_ID;
 
     {
-        auto idle_fb = std::make_shared<Flipbook>();
-
-        idle_fb->frames = {{0, 0, 16, 16}};
-
-        auto run_fb = std::make_shared<Flipbook>();
-
-        run_fb->frame_time = 0.13f;
-        run_fb->frames = {{0, 0, 16, 16}, {16, 0, 16, 16}};
-
-        auto jump_fb = std::make_shared<Flipbook>();
-
-        jump_fb->frames = {{16, 0, 16, 16}};
-
-        Entity player;
+        auto player = create_player(assets, {});
 
         player_id = player.id();
 
-        player.image = {std::make_shared<Image>("data/bunny.png")};
-        player.body = {true, true, {0, 0, 16, 16}};
-        player.platformer = {false, false, idle_fb, std::move(run_fb), std::move(jump_fb)};
-        player.flipbook = {idle_fb};
-
-        Entity block;
-
-        block.image = {std::make_shared<Image>("data/block.png")};
-        block.body = {true, false, {0, 100, 100, 16}};
-
         world.add_next_frame(std::move(player));
-        world.add_next_frame(std::move(block));
+        world.add_next_frame(create_block(assets, {0, 100}));
+        world.add_next_frame(create_block(assets, {16, 100 - 32}));
     }
 
     seconds_since_last_call();

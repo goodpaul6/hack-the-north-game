@@ -32,6 +32,8 @@ private:
     };
 
     std::unordered_map<std::string, FileValues> m_files;
+
+    Tweaker() = default;
 };
 
 }  // namespace htn

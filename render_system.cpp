@@ -42,11 +42,11 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
 
         pos -= m_last_camera_offset.value_or(Vec2f{});
 
+        r.blit(*e.image->image, pos + e.image->offset, e.image->src, e.image->alpha, e.image->flip);
+
         if (debug_bodies && e.body) {
             r.rect({pos.x, pos.y, e.body->rect.w, e.body->rect.h}, RED);
         }
-
-        r.blit(*e.image->image, pos, e.image->src, e.image->alpha, e.image->flip);
     }
 }
 

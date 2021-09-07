@@ -27,6 +27,7 @@ system).
 - [x] Runtime tweaker system
 - [x] Flipping images
 - [x] Flipbook animation
+- [ ] Entity factory
 - [ ] Bullets
 - [ ] Tilemaps
 - [ ] Audio playback

@@ -6,7 +6,7 @@
 
 namespace {
 
-float step(float d) { return std::min(std::abs(d), 1.0f) * (d < 0 ? -1 : 1); }
+float step(float d) { return std::min(std::abs(d), 0.1f) * (d < 0 ? -1 : 1); }
 
 bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
     if (a.platformer && a.body->vel.y > 0) {
@@ -27,11 +27,11 @@ void simulate_physics(World& world, Vec2f grav_accel) {
                 continue;
             }
 
-            if (r.x + r.w < e.body->rect.x || e.body->rect.x + e.body->rect.w < r.x) {
+            if (r.x + r.w <= e.body->rect.x || e.body->rect.x + e.body->rect.w <= r.x) {
                 continue;
             }
 
-            if (r.y + r.h < e.body->rect.y || e.body->rect.y + e.body->rect.h < r.y) {
+            if (r.y + r.h <= e.body->rect.y || e.body->rect.y + e.body->rect.h <= r.y) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ void simulate_physics(World& world, Vec2f grav_accel) {
         auto* b = collide_rect(a, new_rect);
 
         if (b) {
-            for (float d = 0; d < a.body->vel.x; d += step(a.body->vel.x)) {
+            for (float d = 0; std::abs(d) < std::abs(a.body->vel.x); d += step(a.body->vel.x)) {
                 float prev_x = new_rect.x;
                 new_rect.x = a.body->rect.x + d;
 
@@ -91,7 +91,7 @@ void simulate_physics(World& world, Vec2f grav_accel) {
         b = collide_rect(a, new_rect);
 
         if (b) {
-            for (float d = 0; d < a.body->vel.y; d += step(a.body->vel.y)) {
+            for (float d = 0; std::abs(d) < std::abs(a.body->vel.y); d += step(a.body->vel.y)) {
                 float prev_y = new_rect.y;
                 new_rect.y = a.body->rect.y + d;
 
