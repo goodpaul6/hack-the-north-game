@@ -27,8 +27,9 @@ system).
 - [x] Runtime tweaker system
 - [x] Flipping images
 - [x] Flipbook animation
-- [ ] Entity factory
-- [ ] Bullets
+- [x] Entity factory
+- [x] Bullets
+- [ ] Simple enemy that moves back and forth
 - [ ] Tilemaps
 - [ ] Audio playback
 - [ ] Image-based level loading

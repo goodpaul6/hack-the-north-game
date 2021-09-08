@@ -4,7 +4,7 @@ namespace htn {
 
 struct BulletComponent {
     bool left = false;
-    bool ignore_collision_with_platformer = false;
+    bool created_by_player = false;
     float time_remaining = 2;
 };
 

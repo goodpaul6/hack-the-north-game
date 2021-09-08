@@ -6,6 +6,6 @@ namespace htn {
 
 struct World;
 
-void simulate_physics(World& world, Vec2f grav_accel);
+void update_bodies(World& world, Vec2f grav_accel);
 
 }  // namespace htn

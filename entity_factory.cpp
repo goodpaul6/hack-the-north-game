@@ -5,44 +5,93 @@
 
 namespace htn {
 
-Entity create_block(Assets& a, Vec2f pos) {
-    Entity block;
+Entity create_block(Assets& assets, Vec2f pos) {
+    Entity entity;
 
-    block.image = a.block;
-    block.body = {true, false, {pos.x, pos.y, 16, 16}};
+    ImageComponent image{assets.block};
 
-    return block;
+    BodyComponent body;
+
+    body.affected_by_gravity = false;
+
+    body.rect.set_pos(pos);
+    body.rect.set_size({16, 16});
+
+    entity.image = std::move(image);
+    entity.body = std::move(body);
+
+    return entity;
 }
 
-Entity create_player(Assets& a, Vec2f pos) {
-    Entity player;
+Entity create_player(Assets& assets, Vec2f pos) {
+    Entity entity;
 
-    player.image = a.player;
-    player.image->offset.x = -4;
+    ImageComponent image{assets.player};
 
-    player.body = {true, true, {pos.x, pos.y, 8, 16}};
-    player.platformer = {false, false, a.player_idle_fb, a.player_run_fb, a.player_jump_fb};
-    player.flipbook = {a.player_idle_fb};
+    image.offset.x = -4;
 
-    return player;
+    BodyComponent body;
+
+    body.rect.set_pos(pos);
+    body.rect.set_size({8, 16});
+
+    PlatformerComponent platformer;
+
+    platformer.speed = 2;
+    platformer.jump_accel = 3;
+
+    platformer.idle_fb = assets.player_idle_fb;
+    platformer.run_fb = assets.player_run_fb;
+    platformer.jump_fb = assets.player_jump_fb;
+
+    FlipbookComponent flipbook;
+
+    flipbook.data = assets.player_idle_fb;
+
+    PlayerComponent player;
+
+    entity.image = std::move(image);
+    entity.body = std::move(body);
+    entity.platformer = std::move(platformer);
+    entity.flipbook = std::move(flipbook);
+    entity.player = std::move(player);
+
+    return entity;
 }
 
-Entity create_bullet(Assets& a, Vec2f pos, bool left, bool ignore_collision_with_platformer) {
-    Entity bullet;
+Entity create_bullet(Assets& assets, Vec2f pos, bool left, bool created_by_player) {
+    Entity entity;
 
-    bullet.image = a.bullet;
+    ImageComponent image{assets.bullet};
 
-    bullet.image->offset.x = -2;
+    image.offset.x = -2;
+    image.offset.y = -5;
+    image.flip = left;
 
-    bullet.image->offset.y = -5;
-    bullet.image->flip = left;
+    FlipbookComponent flipbook;
 
-    bullet.flipbook = {a.bullet_fb};
+    flipbook.data = assets.bullet_fb;
 
-    bullet.body = {false, false, {pos.x, pos.y, 12, 6}};
-    bullet.bullet = {left, ignore_collision_with_platformer, HTN_TWEAK(1)};
+    BodyComponent body;
 
-    return bullet;
+    body.solid = false;
+    body.affected_by_gravity = false;
+
+    body.rect.set_pos(pos);
+    body.rect.set_size({12, 6});
+
+    BulletComponent bullet;
+
+    bullet.left = left;
+    bullet.created_by_player = created_by_player;
+    bullet.time_remaining = HTN_TWEAK(1);
+
+    entity.image = std::move(image);
+    entity.flipbook = std::move(flipbook);
+    entity.body = std::move(body);
+    entity.bullet = std::move(bullet);
+
+    return entity;
 }
 
 }  // namespace htn

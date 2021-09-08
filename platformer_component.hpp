@@ -5,6 +5,13 @@
 namespace htn {
 
 struct PlatformerComponent {
+    float speed = 0;
+    float jump_accel = 0;
+
+    bool left = false;
+    bool right = false;
+    bool jump = false;
+
     bool on_ground = false;
     bool facing_left = false;
 

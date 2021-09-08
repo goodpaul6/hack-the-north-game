@@ -14,7 +14,7 @@ bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
     }
 
     if (a.bullet) {
-        if (b.platformer && a.bullet->ignore_collision_with_platformer) {
+        if (b.player && a.bullet->created_by_player) {
             return false;
         }
 
@@ -28,7 +28,7 @@ bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
 
 namespace htn {
 
-void simulate_physics(World& world, Vec2f grav_accel) {
+void update_bodies(World& world, Vec2f grav_accel) {
     const auto collide_rect = [&](auto& me, FloatRect r) -> Entity* {
         for (auto& e : world) {
             if (&e == &me || !e.body || !e.body->solid) {

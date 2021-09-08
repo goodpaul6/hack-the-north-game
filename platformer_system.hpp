@@ -3,9 +3,7 @@
 namespace htn {
 
 struct World;
-struct Input;
-struct Assets;
 
-void handle_input(World& world, Input& input, Assets& a);
+void update_platformers(World& world);
 
 }  // namespace htn

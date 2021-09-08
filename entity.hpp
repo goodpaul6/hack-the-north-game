@@ -8,6 +8,7 @@
 #include "flipbook_component.hpp"
 #include "image_component.hpp"
 #include "platformer_component.hpp"
+#include "player_component.hpp"
 
 namespace htn {
 
@@ -24,6 +25,7 @@ struct Entity {
     std::optional<FlipbookComponent> flipbook;
     std::optional<PlatformerComponent> platformer;
     std::optional<BulletComponent> bullet;
+    std::optional<PlayerComponent> player;
 
     Entity();
 

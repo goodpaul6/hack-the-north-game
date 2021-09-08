@@ -7,6 +7,7 @@
 #include "input.hpp"
 #include "physics_system.hpp"
 #include "platformer_system.hpp"
+#include "player_system.hpp"
 #include "render_system.hpp"
 #include "renderer.hpp"
 #include "time.hpp"
@@ -58,9 +59,10 @@ int main(int argc, char** argv) {
         accum_seconds += seconds_since_last_frame;
 
         while (accum_seconds >= SIM_TIME) {
-            handle_input(world, input, assets);
+            update_players(world, input, assets);
+            update_platformers(world);
             update_bullets(world, SIM_TIME);
-            simulate_physics(world, {0, 0.1f});
+            update_bodies(world, {0, 0.1f});
 
             accum_seconds -= SIM_TIME;
         }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vec2.hpp"
+
 namespace htn {
 
 template <typename T>
@@ -13,6 +15,20 @@ struct Rect {
     T top() const { return y; }
     T right() const { return x + w; }
     T bottom() const { return y + h; }
+
+    Vec2<T> pos() const { return {x, y}; }
+
+    void set_pos(Vec2<T> p) {
+        x = p.x;
+        y = p.y;
+    }
+
+    Vec2<T> size() const { return {w, h}; }
+
+    void set_size(Vec2<T> s) {
+        w = s.x;
+        h = s.y;
+    }
 };
 
 using IntRect = Rect<int>;

@@ -8,6 +8,6 @@ struct Assets;
 
 Entity create_block(Assets& a, Vec2f pos);
 Entity create_player(Assets& a, Vec2f pos);
-Entity create_bullet(Assets& a, Vec2f pos, bool left, bool ignore_collision_with_platformer);
+Entity create_bullet(Assets& a, Vec2f pos, bool left, bool created_by_player);
 
 }  // namespace htn
