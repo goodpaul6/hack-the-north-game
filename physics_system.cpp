@@ -9,8 +9,16 @@ namespace {
 float step(float d) { return std::min(std::abs(d), 0.1f) * (d < 0 ? -1 : 1); }
 
 bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
-    if (a.platformer && a.body->vel.y > 0) {
+    if (!x_axis && a.platformer && a.body->vel.y > 0) {
         a.platformer->on_ground = true;
+    }
+
+    if (a.bullet) {
+        if (b.platformer && a.bullet->ignore_collision_with_platformer) {
+            return false;
+        }
+
+        a.alive = false;
     }
 
     return true;
@@ -27,11 +35,11 @@ void simulate_physics(World& world, Vec2f grav_accel) {
                 continue;
             }
 
-            if (r.x + r.w <= e.body->rect.x || e.body->rect.x + e.body->rect.w <= r.x) {
+            if (r.x + r.w < e.body->rect.x || e.body->rect.x + e.body->rect.w < r.x) {
                 continue;
             }
 
-            if (r.y + r.h <= e.body->rect.y || e.body->rect.y + e.body->rect.h <= r.y) {
+            if (r.y + r.h < e.body->rect.y || e.body->rect.y + e.body->rect.h < r.y) {
                 continue;
             }
 
@@ -51,12 +59,6 @@ void simulate_physics(World& world, Vec2f grav_accel) {
         }
 
         if (a.body->vel.x == 0 && a.body->vel.y == 0) {
-            continue;
-        }
-
-        if (!a.body->solid) {
-            a.body->rect.x += a.body->vel.x;
-            a.body->rect.y += a.body->vel.y;
             continue;
         }
 

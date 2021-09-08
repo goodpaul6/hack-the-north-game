@@ -4,6 +4,7 @@
 #include <optional>
 
 #include "body_component.hpp"
+#include "bullet_component.hpp"
 #include "flipbook_component.hpp"
 #include "image_component.hpp"
 #include "platformer_component.hpp"
@@ -22,6 +23,7 @@ struct Entity {
     std::optional<ImageComponent> image;
     std::optional<FlipbookComponent> flipbook;
     std::optional<PlatformerComponent> platformer;
+    std::optional<BulletComponent> bullet;
 
     Entity();
 

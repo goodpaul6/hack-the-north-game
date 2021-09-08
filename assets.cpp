@@ -18,6 +18,8 @@ Assets::Assets() {
     player_jump_fb->frames = {{16, 0, 16, 16}};
 
     bullet_fb = std::make_shared<Flipbook>();
+    bullet_fb->frame_time = 0.001f;
+    bullet_fb->loop = false;
     bullet_fb->frames = {{0, 0, 16, 16}, {16, 0, 16, 16}};
 }
 

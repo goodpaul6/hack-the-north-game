@@ -1,4 +1,5 @@
 #include "assets.hpp"
+#include "bullet_system.hpp"
 #include "entity.hpp"
 #include "entity_factory.hpp"
 #include "flipbook_system.hpp"
@@ -36,8 +37,9 @@ int main(int argc, char** argv) {
         player_id = player.id();
 
         world.add_next_frame(std::move(player));
-        world.add_next_frame(create_block(assets, {0, 100}));
-        world.add_next_frame(create_block(assets, {16, 100 - 32}));
+        for (int i = 0; i < 10; ++i) {
+            world.add_next_frame(create_block(assets, {i * 16, 100}));
+        }
     }
 
     seconds_since_last_call();
@@ -47,6 +49,8 @@ int main(int argc, char** argv) {
     while (!window.closed()) {
         Tweaker::instance().update();
 
+        world.update();
+
         float seconds_since_last_frame = seconds_since_last_call();
 
         update_flipbooks(world, seconds_since_last_frame);
@@ -54,10 +58,9 @@ int main(int argc, char** argv) {
         accum_seconds += seconds_since_last_frame;
 
         while (accum_seconds >= SIM_TIME) {
-            handle_input(world, input);
+            handle_input(world, input, assets);
+            update_bullets(world, SIM_TIME);
             simulate_physics(world, {0, 0.1f});
-
-            world.update();
 
             accum_seconds -= SIM_TIME;
         }
