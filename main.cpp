@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
         world.add_next_frame(create_ground_enemy(assets, {50, 50}));
 
         for (int i = 0; i < 10; ++i) {
+            world.add_next_frame(create_block(assets, {160, i * 16}));
             world.add_next_frame(create_block(assets, {i * 16, 100}));
         }
     }

@@ -28,7 +28,7 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
     }
 
     for (auto& e : world) {
-        if (!e.image) {
+        if (!e.alive || !e.image) {
             continue;
         }
 

@@ -33,3 +33,4 @@ system).
 - [ ] Tilemaps
 - [ ] Audio playback
 - [ ] Image-based level loading
+- [ ] Custom world iterator that skips dead entities

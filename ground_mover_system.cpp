@@ -15,13 +15,14 @@ void update_ground_movers(World& world) {
         auto fall_check_x_offset = (e.platformer->facing_left ? -1 : 1) * e.body->rect.w;
         auto fall_check_y_offset = e.body->rect.h;
 
-        if (!collide_rect(world, e.body->rect.moved({fall_check_x_offset, fall_check_y_offset}),
+        if (e.platformer->on_ground &&
+            !collide_rect(world, e.body->rect.moved({fall_check_x_offset, fall_check_y_offset}),
                           &e)) {
             e.platformer->facing_left = !e.platformer->facing_left;
         }
 
-        e.platformer->left = e.platformer->facing_left;
-        e.platformer->right = !e.platformer->facing_left;
+        e.platformer->left = e.platformer->on_ground && e.platformer->facing_left;
+        e.platformer->right = e.platformer->on_ground && !e.platformer->facing_left;
     }
 }
 

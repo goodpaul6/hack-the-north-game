@@ -16,6 +16,8 @@ struct BodyComponent {
 
     FloatRect rect;
     Vec2f vel;
+
+    size_t collision_sample_count = 10;
 };
 
 }  // namespace htn

@@ -2,33 +2,13 @@
 
 #include <algorithm>
 
+#include "tweaker.hpp"
 #include "world.hpp"
-
-namespace {
-
-float step(float d) { return std::min(std::abs(d), 0.1f) * (d < 0 ? -1 : 1); }
-
-bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
-    if (!x_axis && a.platformer && a.body->vel.y > 0) {
-        a.platformer->on_ground = true;
-    }
-
-    if (a.bullet) {
-        if (b.player && a.bullet->created_by_player) {
-            return false;
-        }
-
-        a.alive = false;
-    }
-
-    return true;
-}
-
-}  // namespace
 
 namespace htn {
 
-Entity* collide_rect(World& world, FloatRect rect, const Entity* entity_to_ignore) {
+void collide_rect(World& world, FloatRect rect, const Entity* entity_to_ignore,
+                  std::vector<Entity*>& collisions) {
     for (auto& e : world) {
         if (&e == entity_to_ignore || !e.body || !e.body->solid) {
             continue;
@@ -42,10 +22,16 @@ Entity* collide_rect(World& world, FloatRect rect, const Entity* entity_to_ignor
             continue;
         }
 
-        return &e;
+        collisions.emplace_back(&e);
     }
+}
 
-    return nullptr;
+Entity* collide_rect(World& world, FloatRect rect, const Entity* entity_to_ignore) {
+    std::vector<Entity*> cols;
+
+    collide_rect(world, rect, entity_to_ignore, cols);
+
+    return !cols.empty() ? cols[0] : nullptr;
 }
 
 void update_bodies(World& world, Vec2f grav_accel) {
@@ -66,46 +52,58 @@ void update_bodies(World& world, Vec2f grav_accel) {
             a.platformer->on_ground = false;
         }
 
-        auto new_rect = a.body->rect;
+        auto new_rect = a.body->rect.moved(a.body->vel);
 
-        new_rect.x += a.body->vel.x;
-
-        auto* b = collide_rect(world, new_rect, &a);
-
-        if (b) {
-            for (float d = 0; std::abs(d) < std::abs(a.body->vel.x); d += step(a.body->vel.x)) {
-                float prev_x = new_rect.x;
-                new_rect.x = a.body->rect.x + d;
-
-                if (b = collide_rect(world, new_rect, &a)) {
-                    new_rect.x = prev_x;
-                    break;
-                }
-            }
-
-            if (handle_collision(a, *b, true)) {
-                a.body->vel.x = 0;
-            }
+        if (!collide_rect(world, new_rect, &a)) {
+            a.body->rect = new_rect;
+            continue;
         }
 
-        new_rect.y += a.body->vel.y;
+        new_rect = a.body->rect;
 
-        b = collide_rect(world, new_rect, &a);
+        auto sample_count = a.body->collision_sample_count;
 
-        if (b) {
-            for (float d = 0; std::abs(d) < std::abs(a.body->vel.y); d += step(a.body->vel.y)) {
-                float prev_y = new_rect.y;
-                new_rect.y = a.body->rect.y + d;
+        float dx = a.body->vel.x / sample_count;
+        float dy = a.body->vel.y / sample_count;
 
-                if (b = collide_rect(world, new_rect, &a)) {
-                    new_rect.y = prev_y;
-                    break;
+        const auto handle_collision = [&](auto& b, bool x_axis) {
+            if (!x_axis && a.platformer && dy > 0) {
+                a.platformer->on_ground = true;
+            }
+
+            if (a.bullet) {
+                if (a.bullet->created_by_player && b.player) {
+                    return false;
                 }
+
+                a.alive = false;
             }
 
-            if (handle_collision(a, *b, false)) {
-                a.body->vel.y = 0;
+            return true;
+        };
+
+        for (int i = 0; i < sample_count; ++i) {
+            auto* b = collide_rect(world, new_rect.moved({dx, 0}), &a);
+
+            if (!b || !handle_collision(*b, true)) {
+                new_rect.x += dx;
+                continue;
             }
+
+            a.body->vel.x = 0;
+            break;
+        }
+
+        for (int i = 0; i < sample_count; ++i) {
+            auto* b = collide_rect(world, new_rect.moved({0, dy}), &a);
+
+            if (!b || !handle_collision(*b, false)) {
+                new_rect.y += dy;
+                continue;
+            }
+
+            a.body->vel.y = 0;
+            break;
         }
 
         a.body->rect = new_rect;
