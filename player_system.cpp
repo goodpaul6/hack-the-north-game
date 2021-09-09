@@ -18,6 +18,9 @@ void update_players(World& world, Input& input, Assets& assets) {
         e.platformer->right = input.key_held('D') || input.key_held(Input::RIGHT);
         e.platformer->jump = input.key_held('W') || input.key_held(Input::UP);
 
+        e.platformer->speed = HTN_TWEAK(2);
+        e.platformer->jump_accel = HTN_TWEAK(3);
+
         if (input.key_down('Z') || input.key_down('J')) {
             float middle = e.body->rect.y + e.body->rect.h / 2 - 3 + HTN_TWEAK(2.5);
 
