@@ -28,27 +28,27 @@ bool handle_collision(htn::Entity& a, htn::Entity& b, bool x_axis) {
 
 namespace htn {
 
-void update_bodies(World& world, Vec2f grav_accel) {
-    const auto collide_rect = [&](auto& me, FloatRect r) -> Entity* {
-        for (auto& e : world) {
-            if (&e == &me || !e.body || !e.body->solid) {
-                continue;
-            }
-
-            if (r.x + r.w < e.body->rect.x || e.body->rect.x + e.body->rect.w < r.x) {
-                continue;
-            }
-
-            if (r.y + r.h < e.body->rect.y || e.body->rect.y + e.body->rect.h < r.y) {
-                continue;
-            }
-
-            return &e;
+Entity* collide_rect(World& world, FloatRect rect, const Entity* entity_to_ignore) {
+    for (auto& e : world) {
+        if (&e == entity_to_ignore || !e.body || !e.body->solid) {
+            continue;
         }
 
-        return nullptr;
-    };
+        if (rect.x + rect.w < e.body->rect.x || e.body->rect.x + e.body->rect.w < rect.x) {
+            continue;
+        }
 
+        if (rect.y + rect.h < e.body->rect.y || e.body->rect.y + e.body->rect.h < rect.y) {
+            continue;
+        }
+
+        return &e;
+    }
+
+    return nullptr;
+}
+
+void update_bodies(World& world, Vec2f grav_accel) {
     for (auto& a : world) {
         if (!a.body) {
             continue;
@@ -70,14 +70,14 @@ void update_bodies(World& world, Vec2f grav_accel) {
 
         new_rect.x += a.body->vel.x;
 
-        auto* b = collide_rect(a, new_rect);
+        auto* b = collide_rect(world, new_rect, &a);
 
         if (b) {
             for (float d = 0; std::abs(d) < std::abs(a.body->vel.x); d += step(a.body->vel.x)) {
                 float prev_x = new_rect.x;
                 new_rect.x = a.body->rect.x + d;
 
-                if (b = collide_rect(a, new_rect)) {
+                if (b = collide_rect(world, new_rect, &a)) {
                     new_rect.x = prev_x;
                     break;
                 }
@@ -90,14 +90,14 @@ void update_bodies(World& world, Vec2f grav_accel) {
 
         new_rect.y += a.body->vel.y;
 
-        b = collide_rect(a, new_rect);
+        b = collide_rect(world, new_rect, &a);
 
         if (b) {
             for (float d = 0; std::abs(d) < std::abs(a.body->vel.y); d += step(a.body->vel.y)) {
                 float prev_y = new_rect.y;
                 new_rect.y = a.body->rect.y + d;
 
-                if (b = collide_rect(a, new_rect)) {
+                if (b = collide_rect(world, new_rect, &a)) {
                     new_rect.y = prev_y;
                     break;
                 }
