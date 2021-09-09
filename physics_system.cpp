@@ -79,6 +79,10 @@ void update_bodies(World& world, Vec2f grav_accel) {
                 a.alive = false;
             }
 
+            if (x_axis && a.ground_mover && a.platformer) {
+                a.platformer->facing_left = !a.platformer->facing_left;
+            }
+
             return true;
         };
 

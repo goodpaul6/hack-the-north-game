@@ -4,11 +4,13 @@
 #include "entity_factory.hpp"
 #include "flipbook_system.hpp"
 #include "ground_mover_system.hpp"
+#include "health_system.hpp"
 #include "image.hpp"
 #include "input.hpp"
 #include "physics_system.hpp"
 #include "platformer_system.hpp"
 #include "player_system.hpp"
+#include "remove_after_duration_system.hpp"
 #include "render_system.hpp"
 #include "renderer.hpp"
 #include "time.hpp"
@@ -60,6 +62,7 @@ int main(int argc, char** argv) {
         float seconds_since_last_frame = seconds_since_last_call();
 
         update_flipbooks(world, seconds_since_last_frame);
+        update_remove_after_duration(world, seconds_since_last_frame);
 
         accum_seconds += seconds_since_last_frame;
 
@@ -67,8 +70,9 @@ int main(int argc, char** argv) {
             update_ground_movers(world);
             update_players(world, input, assets);
             update_platformers(world);
-            update_bullets(world, SIM_TIME);
+            update_bullets(world);
             update_bodies(world, {0, 0.1f});
+            kill_entities_with_zero_health(world);
 
             accum_seconds -= SIM_TIME;
         }

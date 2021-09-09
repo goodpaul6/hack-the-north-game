@@ -5,7 +5,7 @@
 
 namespace htn {
 
-void update_bullets(World& world, float dt) {
+void update_bullets(World& world) {
     for (auto& e : world) {
         if (!e.bullet || !e.body) {
             continue;
@@ -17,12 +17,6 @@ void update_bullets(World& world, float dt) {
             e.body->vel.x = -speed;
         } else {
             e.body->vel.x = speed;
-        }
-
-        e.bullet->time_remaining -= dt;
-
-        if (e.bullet->time_remaining <= 0) {
-            e.alive = false;
         }
     }
 }

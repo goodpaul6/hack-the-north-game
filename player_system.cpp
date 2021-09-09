@@ -31,8 +31,6 @@ void update_players(World& world, Input& input, Assets& assets) {
                     assets, {e.body->rect.x + e.body->rect.w - HTN_TWEAK(0), middle}, false, true));
             }
         }
-
-        e.body->collision_sample_count = static_cast<int>(HTN_TWEAK(100));
     }
 }
 

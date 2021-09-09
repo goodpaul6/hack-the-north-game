@@ -84,12 +84,16 @@ Entity create_bullet(Assets& assets, Vec2f pos, bool left, bool created_by_playe
 
     bullet.left = left;
     bullet.created_by_player = created_by_player;
-    bullet.time_remaining = HTN_TWEAK(1);
+
+    RemoveAfterDurationComponent remove_after_duration;
+
+    remove_after_duration.time_remaining = HTN_TWEAK(1);
 
     entity.image = std::move(image);
     entity.flipbook = std::move(flipbook);
     entity.body = std::move(body);
     entity.bullet = std::move(bullet);
+    entity.remove_after_duration = std::move(remove_after_duration);
 
     return entity;
 }

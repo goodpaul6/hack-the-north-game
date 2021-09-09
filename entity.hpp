@@ -7,9 +7,11 @@
 #include "bullet_component.hpp"
 #include "flipbook_component.hpp"
 #include "ground_mover_component.hpp"
+#include "health_component.hpp"
 #include "image_component.hpp"
 #include "platformer_component.hpp"
 #include "player_component.hpp"
+#include "remove_after_duration_component.hpp"
 
 namespace htn {
 
@@ -28,6 +30,8 @@ struct Entity {
     std::optional<BulletComponent> bullet;
     std::optional<PlayerComponent> player;
     std::optional<GroundMoverComponent> ground_mover;
+    std::optional<HealthComponent> health;
+    std::optional<RemoveAfterDurationComponent> remove_after_duration;
 
     Entity();
 
