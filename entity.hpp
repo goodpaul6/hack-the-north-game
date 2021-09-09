@@ -6,6 +6,7 @@
 #include "body_component.hpp"
 #include "bullet_component.hpp"
 #include "flipbook_component.hpp"
+#include "ground_mover_component.hpp"
 #include "image_component.hpp"
 #include "platformer_component.hpp"
 #include "player_component.hpp"
@@ -26,6 +27,7 @@ struct Entity {
     std::optional<PlatformerComponent> platformer;
     std::optional<BulletComponent> bullet;
     std::optional<PlayerComponent> player;
+    std::optional<GroundMoverComponent> ground_mover;
 
     Entity();
 

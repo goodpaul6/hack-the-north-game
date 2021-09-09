@@ -94,4 +94,39 @@ Entity create_bullet(Assets& assets, Vec2f pos, bool left, bool created_by_playe
     return entity;
 }
 
+Entity create_ground_enemy(Assets& assets, Vec2f pos) {
+    Entity entity;
+
+    ImageComponent image{assets.ground_enemy};
+
+    image.offset.x = -3;
+    image.offset.y = -9;
+
+    FlipbookComponent flipbook;
+
+    flipbook.data = assets.ground_enemy_idle_fb;
+
+    BodyComponent body;
+
+    body.rect.set_pos(pos);
+    body.rect.set_size({10, 7});
+
+    PlatformerComponent platformer;
+
+    platformer.speed = 1;
+    platformer.idle_fb = assets.ground_enemy_idle_fb;
+    platformer.run_fb = assets.ground_enemy_run_fb;
+    platformer.jump_fb = assets.ground_enemy_jump_fb;
+
+    GroundMoverComponent ground_mover;
+
+    entity.image = std::move(image);
+    entity.flipbook = std::move(flipbook);
+    entity.body = std::move(body);
+    entity.platformer = std::move(platformer);
+    entity.ground_mover = std::move(ground_mover);
+
+    return entity;
+}
+
 }  // namespace htn

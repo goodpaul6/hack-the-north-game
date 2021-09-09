@@ -17,7 +17,8 @@ HEADERS = color.hpp window.hpp renderer.hpp image.hpp \
 		  tweaker.hpp flipbook.hpp flipbook_component.hpp \
 		  flipbook_system.hpp entity_factory.hpp \
 		  assets.hpp bullet_component.hpp bullet_system.hpp \
-		  player_component.hpp player_system.hpp
+		  player_component.hpp player_system.hpp ground_mover_system.hpp \
+		  ground_mover_component.hpp
 
 SOURCES = window.cpp renderer.cpp image.cpp input.cpp \
 		  image_component.cpp time.cpp tigr.c main.cpp \
@@ -25,7 +26,7 @@ SOURCES = window.cpp renderer.cpp image.cpp input.cpp \
 		  entity.cpp platformer_system.cpp tweaker.cpp \
 		  flipbook_component.cpp flipbook_system.cpp \
 		  entity_factory.cpp assets.cpp bullet_system.cpp \
-		  player_system.cpp
+		  player_system.cpp ground_mover_system.cpp
 
 game: $(HEADERS) $(SOURCES)
 	g++ $(SOURCES) -g -o $@ -std=c++17 $(LDFLAGS)

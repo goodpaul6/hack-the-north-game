@@ -3,6 +3,7 @@
 #include "entity.hpp"
 #include "entity_factory.hpp"
 #include "flipbook_system.hpp"
+#include "ground_mover_system.hpp"
 #include "image.hpp"
 #include "input.hpp"
 #include "physics_system.hpp"
@@ -38,6 +39,9 @@ int main(int argc, char** argv) {
         player_id = player.id();
 
         world.add_next_frame(std::move(player));
+
+        world.add_next_frame(create_ground_enemy(assets, {50, 50}));
+
         for (int i = 0; i < 10; ++i) {
             world.add_next_frame(create_block(assets, {i * 16, 100}));
         }
@@ -59,6 +63,7 @@ int main(int argc, char** argv) {
         accum_seconds += seconds_since_last_frame;
 
         while (accum_seconds >= SIM_TIME) {
+            update_ground_movers(world);
             update_players(world, input, assets);
             update_platformers(world);
             update_bullets(world, SIM_TIME);

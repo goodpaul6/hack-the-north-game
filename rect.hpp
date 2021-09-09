@@ -29,6 +29,8 @@ struct Rect {
         w = s.x;
         h = s.y;
     }
+
+    Rect<T> moved(Vec2<T> d) const { return {x + d.x, y + d.y, w, h}; }
 };
 
 using IntRect = Rect<int>;
