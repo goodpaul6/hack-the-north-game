@@ -29,7 +29,8 @@ SOURCES = window.cpp renderer.cpp image.cpp input.cpp \
 		  flipbook_component.cpp flipbook_system.cpp \
 		  entity_factory.cpp assets.cpp bullet_system.cpp \
 		  player_system.cpp ground_mover_system.cpp \
-		  remove_after_duration_system.cpp health_system.cpp
+		  remove_after_duration_system.cpp health_system.cpp \
+		  health_component.cpp
 
 game: $(HEADERS) $(SOURCES)
 	g++ $(SOURCES) -g -o $@ -std=c++17 $(LDFLAGS)

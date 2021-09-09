@@ -124,11 +124,17 @@ Entity create_ground_enemy(Assets& assets, Vec2f pos) {
 
     GroundMoverComponent ground_mover;
 
+    HealthComponent health;
+
+    health.hp = 1;
+    health.invuln_time = 0;
+
     entity.image = std::move(image);
     entity.flipbook = std::move(flipbook);
     entity.body = std::move(body);
     entity.platformer = std::move(platformer);
     entity.ground_mover = std::move(ground_mover);
+    entity.health = std::move(health);
 
     return entity;
 }

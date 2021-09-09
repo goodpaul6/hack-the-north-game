@@ -77,6 +77,12 @@ void update_bodies(World& world, Vec2f grav_accel) {
                 }
 
                 a.alive = false;
+
+                if (b.health && !b.health->damage(1)) {
+                    a.alive = true;
+                }
+
+                return !a.alive;
             }
 
             if (x_axis && a.ground_mover && a.platformer) {

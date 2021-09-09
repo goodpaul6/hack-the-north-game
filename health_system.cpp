@@ -4,13 +4,17 @@
 
 namespace htn {
 
-void kill_entities_with_zero_health(World& world) {
+void update_health(World& world, float dt) {
     for (auto& e : world) {
         if (!e.health) {
             continue;
         }
 
         e.alive = e.health->hp > 0;
+
+        if (e.health->invuln_time_remaining > 0) {
+            e.health->invuln_time_remaining -= dt;
+        }
     }
 }
 

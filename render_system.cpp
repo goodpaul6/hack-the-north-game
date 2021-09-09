@@ -42,7 +42,15 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
 
         pos -= m_last_camera_offset.value_or(Vec2f{});
 
-        r.blit(*e.image->image, pos + e.image->offset, e.image->src, e.image->alpha, e.image->flip);
+        bool show = true;
+
+        if (e.health && e.health->invuln_time_remaining) {
+            int counter = (e.health->invuln_time_remaining / HTN_TWEAK(0.25));
+            show = counter % 2 == 0;
+        }
+
+        r.blit(*e.image->image, pos + e.image->offset, e.image->src, show ? e.image->alpha : 0,
+               e.image->flip);
 
         if (debug_bodies && e.body) {
             r.rect({pos.x, pos.y, e.body->rect.w, e.body->rect.h}, RED);
