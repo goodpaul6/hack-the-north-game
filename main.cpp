@@ -43,7 +43,6 @@ int main(int argc, char** argv) {
         world.add_next_frame(std::move(player));
 
         for (int i = 0; i < 10; ++i) {
-            world.add_next_frame(create_block(assets, {160, i * 16}));
             world.add_next_frame(create_block(assets, {i * 16, 100}));
         }
     }
@@ -91,7 +90,8 @@ int main(int argc, char** argv) {
 
         renderer.clear(DARK_GREY);
 
-        render_system.render(world, renderer, player_id, HTN_TWEAK(0) > 0);
+        render_system.render(world, renderer, player_id, HTN_TWEAK(0) > 0,
+                             accum_seconds / SIM_TIME);
 
         window.update();
     }

@@ -7,8 +7,8 @@
 
 namespace htn {
 
-void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
-                          bool debug_bodies) {
+void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id, bool debug_bodies,
+                          float progress_between_frames) {
     if (auto* e = world.find(camera_focus_id)) {
         Vec2f offset;
 
@@ -38,6 +38,10 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
             pos = *e.fixed_pos;
         } else if (e.body) {
             pos = {e.body->rect.x, e.body->rect.y};
+        }
+
+        if (e.body) {
+            pos += e.body->vel * progress_between_frames;
         }
 
         pos -= m_last_camera_offset.value_or(Vec2f{});
