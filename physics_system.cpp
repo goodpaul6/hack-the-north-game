@@ -10,7 +10,7 @@ namespace htn {
 void collide_rect(World& world, FloatRect rect, const Entity* entity_to_ignore,
                   std::vector<Entity*>& collisions) {
     for (auto& e : world) {
-        if (&e == entity_to_ignore || !e.body || !e.body->solid) {
+        if (&e == entity_to_ignore || !e.alive || !e.body || !e.body->solid) {
             continue;
         }
 
