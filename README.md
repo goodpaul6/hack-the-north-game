@@ -29,7 +29,7 @@ system).
 - [x] Flipbook animation
 - [x] Entity factory
 - [x] Bullets
-- [ ] Simple enemy that moves back and forth
+- [x] Simple enemy that moves back and forth
 - [ ] Tilemaps
 - [ ] Audio playback
 - [ ] Image-based level loading
