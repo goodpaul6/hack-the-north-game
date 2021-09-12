@@ -19,7 +19,7 @@
 
 #endif
 
-#include "log.hpp"
+#include "logger.hpp"
 
 namespace {
 
@@ -89,7 +89,7 @@ void Tweaker::update() {
             continue;
         }
 
-        HTN_LOG_INFO("Reloading tweakers for %s", filename.c_str());
+        HTN_LOG_INFO("Reloading tweakers for {}", filename.c_str());
 
         file.last_write_time = t;
 

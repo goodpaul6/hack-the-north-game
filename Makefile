@@ -17,7 +17,7 @@ OBJECTS = window.o renderer.o image.o input.o \
 		  entity_factory.o assets.o bullet_system.o \
 		  player_system.o ground_mover_system.o \
 		  remove_after_duration_system.o health_system.o \
-		  health_component.o
+		  health_component.o logger.o
 
 game: $(OBJECTS)
 	g++ $^ -g -o $@ -std=c++17 $(LDFLAGS)
