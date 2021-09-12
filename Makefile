@@ -9,28 +9,20 @@ else
 	endif
 endif
 
-HEADERS = color.hpp window.hpp renderer.hpp image.hpp \
-		  input.hpp time.hpp tigr.h rect.hpp vec2.hpp \
-		  world.hpp body_component.hpp image_component.hpp \
-		  physics_system.hpp render_system.hpp entity.hpp \
-		  platformer_system.hpp platformer_component.hpp \
-		  tweaker.hpp flipbook.hpp flipbook_component.hpp \
-		  flipbook_system.hpp entity_factory.hpp \
-		  assets.hpp bullet_component.hpp bullet_system.hpp \
-		  player_component.hpp player_system.hpp ground_mover_system.hpp \
-		  ground_mover_component.hpp remove_after_duration_component.hpp \
-		  remove_after_duration_system.hpp health_component.hpp \
-		  health_system.hpp
+OBJECTS = window.o renderer.o image.o input.o \
+		  image_component.o time.o tigr.c main.o \
+		  world.o physics_system.o render_system.o \
+		  entity.o platformer_system.o tweaker.o \
+		  flipbook_component.o flipbook_system.o \
+		  entity_factory.o assets.o bullet_system.o \
+		  player_system.o ground_mover_system.o \
+		  remove_after_duration_system.o health_system.o \
+		  health_component.o
 
-SOURCES = window.cpp renderer.cpp image.cpp input.cpp \
-		  image_component.cpp time.cpp tigr.c main.cpp \
-		  world.cpp physics_system.cpp render_system.cpp \
-		  entity.cpp platformer_system.cpp tweaker.cpp \
-		  flipbook_component.cpp flipbook_system.cpp \
-		  entity_factory.cpp assets.cpp bullet_system.cpp \
-		  player_system.cpp ground_mover_system.cpp \
-		  remove_after_duration_system.cpp health_system.cpp \
-		  health_component.cpp
+game: $(OBJECTS)
+	g++ $^ -g -o $@ -std=c++17 $(LDFLAGS)
 
-game: $(HEADERS) $(SOURCES)
-	g++ $(SOURCES) -g -o $@ -std=c++17 $(LDFLAGS)
+%.o: %.cpp
+	g++ -MMD -MP -c $< -o $@ -g -std=c++17
+
+-include *.d

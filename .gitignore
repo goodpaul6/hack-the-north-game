@@ -1,4 +1,5 @@
 game
 game.exe
 *.swp
-
+*.o
+*.d
