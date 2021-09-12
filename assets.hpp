@@ -23,6 +23,8 @@ struct Assets {
     std::shared_ptr<Flipbook> ground_enemy_run_fb;
     std::shared_ptr<Flipbook> ground_enemy_jump_fb;
 
+    std::shared_ptr<Image> mushroom;
+
     Assets();
 };
 

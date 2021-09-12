@@ -8,7 +8,9 @@
 #include "flipbook_component.hpp"
 #include "ground_mover_component.hpp"
 #include "health_component.hpp"
+#include "health_regen_component.hpp"
 #include "image_component.hpp"
+#include "particle_emitter_component.hpp"
 #include "platformer_component.hpp"
 #include "player_component.hpp"
 #include "remove_after_duration_component.hpp"
@@ -32,6 +34,8 @@ struct Entity {
     std::optional<GroundMoverComponent> ground_mover;
     std::optional<HealthComponent> health;
     std::optional<RemoveAfterDurationComponent> remove_after_duration;
+    std::optional<HealthRegenComponent> health_regen;
+    std::optional<ParticleEmitterComponent> particle_emitter;
 
     Entity();
 

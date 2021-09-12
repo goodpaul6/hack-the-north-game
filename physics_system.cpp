@@ -85,7 +85,22 @@ void update_bodies(World& world, Vec2f grav_accel) {
                 return !a.alive;
             }
 
+            if (a.health && b.health_regen) {
+                a.health->hp += b.health_regen->hp;
+                b.alive = false;
+                return false;
+            }
+
+            if (x_axis && a.player && b.ground_mover) {
+                return false;
+            }
+
             if (x_axis && a.ground_mover && a.platformer) {
+                if (b.player && b.health) {
+                    b.health->damage(1);
+                    return false;
+                }
+
                 a.platformer->facing_left = !a.platformer->facing_left;
             }
 

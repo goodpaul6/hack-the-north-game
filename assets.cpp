@@ -35,6 +35,8 @@ Assets::Assets() {
 
     ground_enemy_jump_fb = std::make_shared<Flipbook>();
     ground_enemy_jump_fb->frames = {{0, 0, 16, 16}};
+
+    mushroom = std::make_shared<Image>("data/mushroom.png");
 }
 
 }  // namespace htn

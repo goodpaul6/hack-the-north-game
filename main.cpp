@@ -7,6 +7,8 @@
 #include "health_system.hpp"
 #include "image.hpp"
 #include "input.hpp"
+#include "particle_emitter_system.hpp"
+#include "particle_manager.hpp"
 #include "physics_system.hpp"
 #include "platformer_system.hpp"
 #include "player_system.hpp"
@@ -45,6 +47,8 @@ int main(int argc, char** argv) {
         for (int i = 0; i < 10; ++i) {
             world.add_next_frame(create_block(assets, {i * 16, 100}));
         }
+
+        world.add_next_frame(create_mushroom(assets, {90, 0}));
     }
 
     seconds_since_last_call();
@@ -79,11 +83,14 @@ int main(int argc, char** argv) {
         accum_seconds += seconds_since_last_frame;
 
         while (accum_seconds >= SIM_TIME) {
+            Vec2f grav_accel{0, HTN_TWEAK(0.1)};
+
             update_ground_movers(world);
             update_players(world, input, assets);
             update_platformers(world);
             update_bullets(world);
-            update_bodies(world, {0, 0.1f});
+            update_particle_emitters(world, grav_accel);
+            update_bodies(world, grav_accel);
 
             accum_seconds -= SIM_TIME;
         }

@@ -48,12 +48,18 @@ Entity create_player(Assets& assets, Vec2f pos) {
 
     flipbook.data = assets.player_idle_fb;
 
+    HealthComponent health;
+
+    health.hp = 5;
+    health.invuln_time = 2;
+
     PlayerComponent player;
 
     entity.image = std::move(image);
     entity.body = std::move(body);
     entity.platformer = std::move(platformer);
     entity.flipbook = std::move(flipbook);
+    entity.health = std::move(health);
     entity.player = std::move(player);
 
     return entity;
@@ -129,12 +135,48 @@ Entity create_ground_enemy(Assets& assets, Vec2f pos) {
     health.hp = 1;
     health.invuln_time = 0;
 
+    ParticleEmitterComponent particle_emitter;
+
     entity.image = std::move(image);
     entity.flipbook = std::move(flipbook);
     entity.body = std::move(body);
     entity.platformer = std::move(platformer);
     entity.ground_mover = std::move(ground_mover);
     entity.health = std::move(health);
+
+    return entity;
+}
+
+Entity create_mushroom(Assets& assets, Vec2f pos) {
+    ImageComponent image{assets.mushroom};
+
+    BodyComponent body;
+
+    body.rect.set_pos(pos);
+    body.rect.set_size({16, 16});
+
+    HealthRegenComponent health_regen;
+
+    health_regen.hp = 1;
+
+    Entity entity;
+
+    entity.image = std::move(image);
+    entity.body = std::move(body);
+    entity.health_regen = std::move(health_regen);
+
+    return entity;
+}
+
+Entity create_explosion(Vec2f pos) {
+    ParticleEmitterComponent particle_emitter;
+
+    particle_emitter.emit_count = static_cast<int>(HTN_TWEAK(20));
+
+    Entity entity;
+
+    entity.fixed_pos = pos;
+    entity.particle_emitter = std::move(particle_emitter);
 
     return entity;
 }

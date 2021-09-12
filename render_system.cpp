@@ -28,7 +28,15 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
     }
 
     for (auto& e : world) {
-        if (!e.alive || !e.image) {
+        if (!e.alive) {
+            continue;
+        }
+
+        if (e.particle_emitter) {
+            e.particle_emitter->manager.render(r, camera_offset());
+        }
+
+        if (!e.image) {
             continue;
         }
 
@@ -44,7 +52,7 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
             pos += e.body->vel * progress_between_frames;
         }
 
-        pos -= m_last_camera_offset.value_or(Vec2f{});
+        pos -= camera_offset();
 
         bool show = true;
 
@@ -61,5 +69,7 @@ void RenderSystem::render(World& world, Renderer& r, Entity::ID camera_focus_id,
         }
     }
 }
+
+Vec2f RenderSystem::camera_offset() const { return m_last_camera_offset.value_or(Vec2f{}); }
 
 }  // namespace htn

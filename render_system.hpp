@@ -13,6 +13,8 @@ struct RenderSystem {
     void render(World& world, Renderer& r, Entity::ID camera_focus_id, bool debug_bodies,
                 float progress_between_frames);
 
+    Vec2f camera_offset() const;
+
 private:
     std::optional<Vec2f> m_last_camera_offset;
 };
