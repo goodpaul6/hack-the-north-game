@@ -2,6 +2,11 @@
 
 namespace htn {
 
+Assets& Assets::instance() {
+    static Assets instance;
+    return instance;
+}
+
 Assets::Assets() {
     block = std::make_shared<Image>("data/block.png");
 

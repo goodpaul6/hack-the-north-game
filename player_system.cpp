@@ -1,4 +1,3 @@
-#include "assets.hpp"
 #include "entity_factory.hpp"
 #include "input.hpp"
 #include "player_component.hpp"
@@ -7,7 +6,7 @@
 
 namespace htn {
 
-void update_players(World& world, Input& input, Assets& assets) {
+void update_players(World& world, Input& input) {
     for (auto& e : world) {
         if (!e.player || !e.platformer || !e.body) {
             continue;
@@ -25,10 +24,10 @@ void update_players(World& world, Input& input, Assets& assets) {
 
             if (e.platformer->facing_left) {
                 world.add_next_frame(
-                    create_bullet(assets, {e.body->rect.x - HTN_TWEAK(12), middle}, true, true));
+                    create_bullet({e.body->rect.x - HTN_TWEAK(12), middle}, true, true));
             } else {
                 world.add_next_frame(create_bullet(
-                    assets, {e.body->rect.x + e.body->rect.w - HTN_TWEAK(0), middle}, false, true));
+                    {e.body->rect.x + e.body->rect.w - HTN_TWEAK(0), middle}, false, true));
             }
         }
     }

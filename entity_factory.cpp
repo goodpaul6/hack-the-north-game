@@ -5,10 +5,10 @@
 
 namespace htn {
 
-Entity create_block(Assets& assets, Vec2f pos) {
+Entity create_block(Vec2f pos) {
     Entity entity;
 
-    ImageComponent image{assets.block};
+    ImageComponent image{Assets::instance().block};
 
     BodyComponent body;
 
@@ -23,10 +23,10 @@ Entity create_block(Assets& assets, Vec2f pos) {
     return entity;
 }
 
-Entity create_player(Assets& assets, Vec2f pos) {
+Entity create_player(Vec2f pos) {
     Entity entity;
 
-    ImageComponent image{assets.player};
+    ImageComponent image{Assets::instance().player};
 
     image.offset.x = -4;
 
@@ -40,13 +40,13 @@ Entity create_player(Assets& assets, Vec2f pos) {
     platformer.speed = 2;
     platformer.jump_accel = 3;
 
-    platformer.idle_fb = assets.player_idle_fb;
-    platformer.run_fb = assets.player_run_fb;
-    platformer.jump_fb = assets.player_jump_fb;
+    platformer.idle_fb = Assets::instance().player_idle_fb;
+    platformer.run_fb = Assets::instance().player_run_fb;
+    platformer.jump_fb = Assets::instance().player_jump_fb;
 
     FlipbookComponent flipbook;
 
-    flipbook.data = assets.player_idle_fb;
+    flipbook.data = Assets::instance().player_idle_fb;
 
     PlayerComponent player;
 
@@ -59,10 +59,10 @@ Entity create_player(Assets& assets, Vec2f pos) {
     return entity;
 }
 
-Entity create_bullet(Assets& assets, Vec2f pos, bool left, bool created_by_player) {
+Entity create_bullet(Vec2f pos, bool left, bool created_by_player) {
     Entity entity;
 
-    ImageComponent image{assets.bullet};
+    ImageComponent image{Assets::instance().bullet};
 
     image.offset.x = -2;
     image.offset.y = -5;
@@ -70,7 +70,7 @@ Entity create_bullet(Assets& assets, Vec2f pos, bool left, bool created_by_playe
 
     FlipbookComponent flipbook;
 
-    flipbook.data = assets.bullet_fb;
+    flipbook.data = Assets::instance().bullet_fb;
 
     BodyComponent body;
 
@@ -98,17 +98,17 @@ Entity create_bullet(Assets& assets, Vec2f pos, bool left, bool created_by_playe
     return entity;
 }
 
-Entity create_ground_enemy(Assets& assets, Vec2f pos) {
+Entity create_ground_enemy(Vec2f pos) {
     Entity entity;
 
-    ImageComponent image{assets.ground_enemy};
+    ImageComponent image{Assets::instance().ground_enemy};
 
     image.offset.x = -3;
     image.offset.y = -9;
 
     FlipbookComponent flipbook;
 
-    flipbook.data = assets.ground_enemy_idle_fb;
+    flipbook.data = Assets::instance().ground_enemy_idle_fb;
 
     BodyComponent body;
 
@@ -118,9 +118,9 @@ Entity create_ground_enemy(Assets& assets, Vec2f pos) {
     PlatformerComponent platformer;
 
     platformer.speed = 1;
-    platformer.idle_fb = assets.ground_enemy_idle_fb;
-    platformer.run_fb = assets.ground_enemy_run_fb;
-    platformer.jump_fb = assets.ground_enemy_jump_fb;
+    platformer.idle_fb = Assets::instance().ground_enemy_idle_fb;
+    platformer.run_fb = Assets::instance().ground_enemy_run_fb;
+    platformer.jump_fb = Assets::instance().ground_enemy_jump_fb;
 
     GroundMoverComponent ground_mover;
 
