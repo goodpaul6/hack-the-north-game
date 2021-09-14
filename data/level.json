@@ -44,26 +44,26 @@
                 {
                  "gid":61,
                  "height":16,
-                 "id":7,
+                 "id":9,
                  "name":"",
                  "rotation":0,
-                 "type":"player",
+                 "type":"",
                  "visible":true,
                  "width":16,
                  "x":16,
-                 "y":112
+                 "y":128
                 }, 
                 {
                  "gid":62,
                  "height":16,
-                 "id":8,
+                 "id":10,
                  "name":"",
                  "rotation":0,
-                 "type":"ground_enemy",
+                 "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":96
+                 "x":80,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -72,7 +72,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":9,
+ "nextobjectid":13,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
