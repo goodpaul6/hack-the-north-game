@@ -30,6 +30,7 @@ Level::Level(const std::string& filename) : m_tilemap{filename} {
                 BodyComponent body;
 
                 body.rect = object.rect;
+                body.affected_by_gravity = false;
 
                 Entity entity;
 
