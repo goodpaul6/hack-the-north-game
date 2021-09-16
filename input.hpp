@@ -14,6 +14,8 @@ struct Input {
     bool key_down(int key);
     bool key_held(int key);
 
+    int mouse_state(int* x, int* y);
+
 private:
     Tigr* m_screen = nullptr;
 };
