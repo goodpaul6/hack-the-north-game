@@ -52,6 +52,10 @@ void Renderer::blit(Image& image, Vec2f pos, float alpha, bool flip) {
     blit(image, pos, {0, 0, image.m_data->w, image.m_data->h}, alpha, flip);
 }
 
+void Renderer::print(const char* str, Vec2f pos, Color c) {
+    tigrPrint(m_target, tfont, static_cast<int>(pos.x), static_cast<int>(pos.y), c, str);
+}
+
 int Renderer::width() const { return m_target->w; }
 int Renderer::height() const { return m_target->h; }
 
