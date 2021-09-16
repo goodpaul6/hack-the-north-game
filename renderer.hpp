@@ -26,6 +26,8 @@ struct Renderer {
     void blit(Image& image, Vec2f pos, IntRect src, float alpha = 1.0f, bool flip = false);
     void blit(Image& image, Vec2f pos, float alpha = 1.0f, bool flip = false);
 
+    void print(const char* str, Vec2f pos, Color c);
+
     int width() const;
     int height() const;
 
