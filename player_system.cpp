@@ -24,10 +24,10 @@ void update_players(World& world, Input& input) {
 
             if (e.platformer->facing_left) {
                 world.add_next_frame(
-                    create_bullet({e.body->rect.x - HTN_TWEAK(12), middle}, true, true));
+                    create_bullet({e.body->rect.x - HTN_TWEAK(10), middle}, true, true));
             } else {
                 world.add_next_frame(create_bullet(
-                    {e.body->rect.x + e.body->rect.w - HTN_TWEAK(0), middle}, false, true));
+                    {e.body->rect.x + e.body->rect.w - HTN_TWEAK(2), middle}, false, true));
             }
         }
     }
