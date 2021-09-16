@@ -34,3 +34,15 @@ system).
 - [ ] Audio playback
 - [ ] Image-based level loading
 - [ ] Custom world iterator that skips dead entities
+
+## Installation
+
+### Debian/Ubuntu
+
+First install the dependencies:
+```
+sudo apt install freeglut3-dev
+sudo apt install libx11-dev
+```
+
+Then build the game with `make`
