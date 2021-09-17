@@ -16,6 +16,10 @@ struct Rect {
     T right() const { return x + w; }
     T bottom() const { return y + h; }
 
+    Vec2<T> center() const {
+        return {x + w / 2, y + h / 2};
+    }
+
     Vec2<T> pos() const { return {x, y}; }
 
     void set_pos(Vec2<T> p) {

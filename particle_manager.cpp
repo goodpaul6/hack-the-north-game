@@ -1,30 +1,40 @@
 #include "particle_manager.hpp"
 
 #include <algorithm>
-#include <cstdlib>
+#include <random>
 
 #include "renderer.hpp"
 #include "tweaker.hpp"
 
+namespace {
+
+float rand_float(float min = 0.0f, float max = 1.0f) {
+    std::random_device rd;
+    std::mt19937 mt{rd()};
+    std::normal_distribution<float> dist{(min + max) / 2.0f, (max - min) / 3.0f};
+
+    return dist(mt);
+}
+
+int rand_int(int min, int max) {
+    return static_cast<int>(rand_float() * (max - min) + min);
+}
+
+}
+
 namespace htn {
 
-void ParticleManager::emit(size_t count, Vec2f pos, Color col) {
-    float y_speed = HTN_TWEAK(4);
-    float x_speed = HTN_TWEAK(2);
-
-    auto frames_remaining = static_cast<int>(HTN_TWEAK(30));
-
-    const auto rand_float = []() { return (static_cast<float>(std::rand()) / RAND_MAX); };
-
-    for (size_t i = 0; i < count; ++i) {
+void ParticleManager::emit(const EmitParams& params) {
+    for (size_t i = 0; i < params.count; ++i) {
         Particle p;
 
-        p.pos = pos;
-        p.col = col;
+        p.pos = params.pos;
+        p.col = params.col;
 
-        p.vel = {(rand_float() - 0.5f) * x_speed, rand_float() * -y_speed};
+        p.vel = {rand_float(params.min_x_vel, params.max_x_vel),
+                 rand_float(params.min_y_vel, params.max_y_vel)};
 
-        p.frames_remaining = static_cast<int>(rand_float() * frames_remaining);
+        p.frames_remaining = rand_int(params.min_frames_remaining, params.max_frames_remaining);
 
         m_parts.emplace_back(std::move(p));
     }
@@ -44,7 +54,7 @@ void ParticleManager::simulate(Vec2f grav_accel) {
 }
 
 void ParticleManager::render(Renderer& r, Vec2f camera_offset) const {
-    float size = HTN_TWEAK(2);
+    float size = HTN_TWEAK(1);
 
     for (auto& p : m_parts) {
         r.fill({p.pos.x - camera_offset.x, p.pos.y - camera_offset.y, size, size}, p.col);

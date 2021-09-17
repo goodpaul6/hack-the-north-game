@@ -4,6 +4,7 @@
 #include "time.hpp"
 #include "tweaker.hpp"
 #include "window.hpp"
+#include "logger.hpp"
 
 const int WIDTH = 320;
 const int HEIGHT = 180;
@@ -35,7 +36,6 @@ int main(int argc, char** argv) {
 
         while (accum_seconds >= SIM_TIME) {
             // This inner loop runs at 60FPS
-
             level.fixed_update(input, {renderer.width(), renderer.height()});
             accum_seconds -= SIM_TIME;
         }

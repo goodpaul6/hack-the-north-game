@@ -4,13 +4,29 @@
 
 #include "color.hpp"
 #include "vec2.hpp"
+#include "rect.hpp"
 
 namespace htn {
 
 struct Renderer;
 
 struct ParticleManager {
-    void emit(size_t count, Vec2f pos, Color col);
+    struct EmitParams {
+        size_t count;
+        Color col;
+        Vec2f pos;
+
+        float min_x_vel = 0;
+        float max_x_vel = 0;
+
+        float min_y_vel = 0;
+        float max_y_vel = 0;
+
+        int min_frames_remaining = 0;
+        int max_frames_remaining = 0;
+    };
+
+    void emit(const EmitParams& params);
     void simulate(Vec2f grav_accel);
     void render(Renderer& r, Vec2f camera_offset) const;
 

@@ -7,15 +7,15 @@ namespace htn {
 
 void update_particle_emitters(World& world, Vec2f grav_accel) {
     for (auto& e : world) {
-        if (!e.particle_emitter || !e.fixed_pos) {
+        if (!e.particle_emitter) {
             continue;
         }
 
         e.particle_emitter->manager.simulate(grav_accel);
 
-        if (e.particle_emitter->emit_count > 0) {
-            e.particle_emitter->manager.emit(e.particle_emitter->emit_count, *e.fixed_pos, RED);
-            e.particle_emitter->emit_count = 0;
+        if (e.particle_emitter->emit_params.count > 0) {
+            e.particle_emitter->manager.emit(e.particle_emitter->emit_params);
+            e.particle_emitter->emit_params.count = 0;
         }
     }
 }

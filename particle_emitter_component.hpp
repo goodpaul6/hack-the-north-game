@@ -5,7 +5,7 @@
 namespace htn {
 
 struct ParticleEmitterComponent {
-    size_t emit_count = 0;
+    ParticleManager::EmitParams emit_params;
     ParticleManager manager;
 };
 
