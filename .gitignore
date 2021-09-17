@@ -3,3 +3,4 @@ game.exe
 *.swp
 *.o
 *.d
+build
