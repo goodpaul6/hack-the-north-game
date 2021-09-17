@@ -31,7 +31,11 @@ int main(int argc, char** argv) {
 
         accum_seconds += dt;
 
+        // This outer loop could run at any rate
+
         while (accum_seconds >= SIM_TIME) {
+            // This inner loop runs at 60FPS
+
             level.fixed_update(input, {renderer.width(), renderer.height()});
             accum_seconds -= SIM_TIME;
         }

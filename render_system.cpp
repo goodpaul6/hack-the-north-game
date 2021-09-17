@@ -30,7 +30,15 @@ void RenderSystem::update_camera_offset(World& world, Vec2f view_size, Entity::I
 void RenderSystem::render(World& world, Renderer& r, bool debug_bodies,
                           float progress_between_frames) {
     for (auto& e : world) {
-        if (!e.alive || !e.image) {
+        if (!e.alive) {
+            continue;
+        }
+
+        if (e.particle_emitter) {
+            e.particle_emitter->manager.render(r, camera_offset());
+        }
+
+        if (!e.image) {
             continue;
         }
 

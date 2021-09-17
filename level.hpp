@@ -1,5 +1,6 @@
 #pragma once
 
+#include "particle_manager.hpp"
 #include "render_system.hpp"
 #include "tilemap.hpp"
 #include "world.hpp"
@@ -21,6 +22,8 @@ private:
     World m_world;
     Tilemap m_tilemap;
     RenderSystem m_render_system;
+
+    ParticleManager m_particle_manager;
 
     Entity::ID m_player_id = Entity::INVALID_ID;
 };

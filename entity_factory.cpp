@@ -50,11 +50,17 @@ Entity create_player(Vec2f pos) {
 
     PlayerComponent player;
 
+    HealthComponent health;
+
+    health.hp = static_cast<int>(HTN_TWEAK(5));
+    health.invuln_time = 2;
+
     entity.image = std::move(image);
     entity.body = std::move(body);
     entity.platformer = std::move(platformer);
     entity.flipbook = std::move(flipbook);
     entity.player = std::move(player);
+    entity.health = std::move(health);
 
     return entity;
 }
@@ -135,6 +141,27 @@ Entity create_ground_enemy(Vec2f pos) {
     entity.platformer = std::move(platformer);
     entity.ground_mover = std::move(ground_mover);
     entity.health = std::move(health);
+
+    return entity;
+}
+
+Entity create_mushroom(Vec2f pos) {
+    Entity entity;
+
+    ImageComponent image{Assets::instance().mushroom};
+
+    BodyComponent body;
+
+    body.rect.set_pos(pos);
+    body.rect.set_size({16, 16});
+
+    HealthRegenComponent health_regen;
+
+    health_regen.amount = 1;
+
+    entity.image = std::move(image);
+    entity.body = std::move(body);
+    entity.health_regen = std::move(health_regen);
 
     return entity;
 }

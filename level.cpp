@@ -10,6 +10,7 @@
 #include "health_system.hpp"
 #include "image.hpp"
 #include "input.hpp"
+#include "particle_emitter_system.hpp"
 #include "physics_system.hpp"
 #include "platformer_system.hpp"
 #include "player_system.hpp"
@@ -51,6 +52,8 @@ Level::Level(const std::string& filename) : m_tilemap{filename} {
             }
         }
     }
+
+    m_world.add_next_frame(create_mushroom({100, 50}));
 }
 
 void Level::update(float dt) {
@@ -69,6 +72,11 @@ void Level::fixed_update(Input& input, Vec2f view_size) {
     update_platformers(m_world);
     update_bullets(m_world);
     update_bodies(m_world, grav_accel);
+    update_particle_emitters(m_world, grav_accel);
+
+    m_particle_manager.emit(1, {50, 50}, RED);
+
+    m_particle_manager.simulate(grav_accel);
 
     m_render_system.update_camera_offset(m_world, view_size, m_player_id);
 }
@@ -78,6 +86,8 @@ void Level::render(Renderer& r, float progress_between_frames) {
 
     m_tilemap.render(r, m_render_system.camera_offset());
     m_render_system.render(m_world, r, HTN_TWEAK(0) > 0, progress_between_frames);
+
+    m_particle_manager.render(r, m_render_system.camera_offset());
 }
 
 }  // namespace htn
