@@ -4,3 +4,4 @@ game.exe
 *.o
 *.d
 build
+CMakeLists.txt.user
