@@ -24,64 +24,72 @@
 
 namespace htn {
 
-Level::Level(const std::string& filename) : m_tilemap{filename} {
-    for (auto& object_layer : m_tilemap.object_layers()) {
-        if (object_layer.name == "collision") {
-            for (auto& object : object_layer.objects) {
-                BodyComponent body;
+Level::Level() : m_sand{320, 180} {
+    m_world.add_next_frame(create_player({100, 0}));
 
-                body.rect = object.rect;
-                body.affected_by_gravity = false;
-
-                Entity entity;
-
-                entity.body = std::move(body);
-
-                m_world.add_next_frame(entity);
-            }
-        } else {
-            for (auto& object : object_layer.objects) {
-                if (object.type == "player") {
-                    auto player = create_player(object.rect.pos());
-                    m_player_id = player.id();
-
-                    m_world.add_next_frame(player);
-                } else if (object.type == "ground_enemy") {
-                    m_world.add_next_frame(create_ground_enemy(object.rect.pos()));
-                }
-            }
-        }
+    for (int i = 0; i < 10; ++i) {
+        m_world.add_next_frame(create_block({100 + i * 16, 150}));
     }
 
-    m_world.add_next_frame(create_mushroom({100, 50}));
+    m_world.add_next_frame(create_block({100, 150 - 16}));
+    m_world.add_next_frame(create_block({100 + 160 - 16, 150 - 16}));
 }
 
 void Level::update(float dt) {
     m_world.update();
 
-    update_health(m_world, dt);
     update_flipbooks(m_world, dt);
+    update_health(m_world, dt);
     update_remove_after_duration(m_world, dt);
 }
 
 void Level::fixed_update(Input& input, Vec2f view_size) {
     Vec2f grav_accel{0, HTN_TWEAK(0.1)};
 
-    update_ground_movers(m_world);
-    update_players(m_world, input);
-    update_platformers(m_world);
-    update_bullets(m_world);
     update_bodies(m_world, grav_accel);
-    update_particle_emitters(m_world, grav_accel);
+    update_platformers(m_world);
+    update_players(m_world, input);
 
-    m_render_system.update_camera_offset(m_world, view_size, m_player_id);
+    for (int y = 0; y < m_sand.height(); ++y) {
+        for (int x = 0; x < m_sand.width(); ++x) {
+            if (m_sand.get(x, y) == Sand::SOLID) {
+                m_sand.set(x, y, Sand::AIR);
+            }
+        }
+    }
+
+    for (auto& e : m_world) {
+        if (!e.body) {
+            continue;
+        }
+
+        auto rect = e.body->rect;
+
+        for (int y = static_cast<int>(rect.y); y < static_cast<int>(rect.y + rect.h); ++y) {
+            for (int x = static_cast<int>(rect.x); x < static_cast<int>(rect.x + rect.w); ++x) {
+                m_sand.set(x, y, Sand::SOLID);
+            }
+        }
+    }
+
+    auto mouse_state = input.mouse_state();
+
+    if (mouse_state.buttons) {
+        m_sand.set(mouse_state.pos.x - 2, mouse_state.pos.y, Sand::WATER);
+        m_sand.set(mouse_state.pos.x - 1, mouse_state.pos.y, Sand::WATER);
+        m_sand.set(mouse_state.pos.x, mouse_state.pos.y, Sand::WATER);
+        m_sand.set(mouse_state.pos.x + 1, mouse_state.pos.y, Sand::WATER);
+        m_sand.set(mouse_state.pos.x + 2, mouse_state.pos.y, Sand::WATER);
+    }
+
+    m_sand.simulate(m_world);
 }
 
 void Level::render(Renderer& r, float progress_between_frames) {
     r.clear(DARK_GREY);
 
-    m_tilemap.render(r, m_render_system.camera_offset());
-    m_render_system.render(m_world, r, HTN_TWEAK(0) > 0, progress_between_frames);
+    m_sand.render(r);
+    m_render_system.render(m_world, r, false, progress_between_frames);
 }
 
 }  // namespace htn

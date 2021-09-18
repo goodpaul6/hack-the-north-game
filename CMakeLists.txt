@@ -42,7 +42,9 @@ set(SOURCES
     tilemap.cpp
     level.cpp
     particle_manager.cpp
-    particle_emitter_system.cpp)
+    particle_emitter_system.cpp
+    top_down_system.cpp
+    sand.cpp)
 
 add_executable(game ${SOURCES})
 

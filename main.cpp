@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 
     seconds_since_last_call();
 
-    Level level{"data/level.json"};
+    Level level;
 
     float accum_seconds = 0;
 
