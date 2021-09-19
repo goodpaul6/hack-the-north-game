@@ -25,28 +25,29 @@
 
 namespace htn {
 
-Level::Level(const std::string& filename) : m_tilemap{filename} {
-    for (auto& object_layer : m_tilemap.object_layers()) {
+Level::Level() : m_tilemap{"data/level.json"} {
+    for (const auto& object_layer : m_tilemap.object_layers()) {
         if (object_layer.name == "collision") {
-            for (auto& object : object_layer.objects) {
+            for (const auto& object : object_layer.objects) {
+                Entity entity;
+
                 BodyComponent body;
 
-                body.rect = object.rect;
                 body.affected_by_gravity = false;
-
-                Entity entity;
+                body.rect = object.rect;
 
                 entity.body = std::move(body);
 
-                m_world.add_next_frame(entity);
+                m_world.add_next_frame(std::move(entity));
             }
         } else {
-            for (auto& object : object_layer.objects) {
+            for (const auto& object : object_layer.objects) {
                 if (object.type == "player") {
                     auto player = create_player(object.rect.pos());
+
                     m_player_id = player.id();
 
-                    m_world.add_next_frame(player);
+                    m_world.add_next_frame(std::move(player));
                 }
             }
         }

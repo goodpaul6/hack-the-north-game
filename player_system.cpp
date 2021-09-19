@@ -17,7 +17,7 @@ void update_players(World& world, Input& input) {
         e.top_down->up = input.key_held('W') || input.key_held(Input::UP);
         e.top_down->down = input.key_held('S') || input.key_held(Input::DOWN);
 
-        e.top_down->speed = HTN_TWEAK(2);
+        e.top_down->speed = HTN_TWEAK(1.5);
     }
 }
 

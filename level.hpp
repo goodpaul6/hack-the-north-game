@@ -11,7 +11,7 @@ struct Input;
 struct Assets;
 
 struct Level {
-    Level(const std::string& filename);
+    Level();
 
     void update(float dt);
     void fixed_update(Input& input, Vec2f view_size);
