@@ -8,22 +8,12 @@
 namespace htn {
 
 struct Assets {
-    std::shared_ptr<Image> block;
-
     std::shared_ptr<Image> player;
-    std::shared_ptr<Flipbook> player_idle_fb;
-    std::shared_ptr<Flipbook> player_run_fb;
-    std::shared_ptr<Flipbook> player_jump_fb;
 
-    std::shared_ptr<Image> bullet;
-    std::shared_ptr<Flipbook> bullet_fb;
-
-    std::shared_ptr<Image> ground_enemy;
-    std::shared_ptr<Flipbook> ground_enemy_idle_fb;
-    std::shared_ptr<Flipbook> ground_enemy_run_fb;
-    std::shared_ptr<Flipbook> ground_enemy_jump_fb;
-
-    std::shared_ptr<Image> mushroom;
+    std::shared_ptr<Flipbook> player_left_fb;
+    std::shared_ptr<Flipbook> player_right_fb;
+    std::shared_ptr<Flipbook> player_up_fb;
+    std::shared_ptr<Flipbook> player_down_fb;
 
     static Assets& instance();
 

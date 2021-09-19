@@ -27,12 +27,14 @@ void update_platformers(World& world) {
             move = true;
         }
 
-        if (!e.platformer->on_ground) {
-            e.flipbook->play(e.platformer->jump_fb, false);
-        } else if (move) {
-            e.flipbook->play(e.platformer->run_fb, false);
-        } else {
-            e.flipbook->play(e.platformer->idle_fb, false);
+        if (e.flipbook) {
+            if (!e.platformer->on_ground) {
+                e.flipbook->play(e.platformer->jump_fb, false);
+            } else if (move) {
+                e.flipbook->play(e.platformer->run_fb, false);
+            } else {
+                e.flipbook->play(e.platformer->idle_fb, false);
+            }
         }
 
         if (e.platformer->on_ground && e.platformer->jump) {

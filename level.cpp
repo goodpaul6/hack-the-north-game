@@ -19,6 +19,7 @@
 #include "renderer.hpp"
 #include "tilemap.hpp"
 #include "time.hpp"
+#include "top_down_system.hpp"
 #include "tweaker.hpp"
 #include "world.hpp"
 
@@ -46,14 +47,10 @@ Level::Level(const std::string& filename) : m_tilemap{filename} {
                     m_player_id = player.id();
 
                     m_world.add_next_frame(player);
-                } else if (object.type == "ground_enemy") {
-                    m_world.add_next_frame(create_ground_enemy(object.rect.pos()));
                 }
             }
         }
     }
-
-    m_world.add_next_frame(create_mushroom({100, 50}));
 }
 
 void Level::update(float dt) {
@@ -70,6 +67,7 @@ void Level::fixed_update(Input& input, Vec2f view_size) {
     update_ground_movers(m_world);
     update_players(m_world, input);
     update_platformers(m_world);
+    update_top_downs(m_world);
     update_bullets(m_world);
     update_bodies(m_world, grav_accel);
     update_particle_emitters(m_world, grav_accel);

@@ -38,36 +38,30 @@ void RenderSystem::render(World& world, Renderer& r, bool debug_bodies,
             e.particle_emitter->manager.render(r, camera_offset());
         }
 
-        if (!e.image) {
-            continue;
-        }
-
         Vec2f pos;
 
         if (e.fixed_pos) {
             pos = *e.fixed_pos;
         } else if (e.body) {
-            pos = {e.body->rect.x, e.body->rect.y};
-        }
-
-        if (e.body) {
-            pos += e.body->vel * progress_between_frames;
+            pos = Vec2f{e.body->rect.x, e.body->rect.y} + e.body->vel * progress_between_frames;
         }
 
         pos -= camera_offset();
 
-        bool show = true;
-
-        if (e.health && e.health->invuln_time_remaining) {
-            int counter = (e.health->invuln_time_remaining / HTN_TWEAK(0.25));
-            show = counter % 2 == 0;
-        }
-
-        r.blit(*e.image->image, pos + e.image->offset, e.image->src, show ? e.image->alpha : 0,
-               e.image->flip);
-
         if (debug_bodies && e.body) {
             r.rect({pos.x, pos.y, e.body->rect.w, e.body->rect.h}, RED);
+        }
+
+        if (e.image) {
+            bool show = true;
+
+            if (e.health && e.health->invuln_time_remaining) {
+                int counter = (e.health->invuln_time_remaining / HTN_TWEAK(0.25));
+                show = counter % 2 == 0;
+            }
+
+            r.blit(*e.image->image, pos + e.image->offset, e.image->src, show ? e.image->alpha : 0,
+                   e.image->flip);
         }
     }
 }

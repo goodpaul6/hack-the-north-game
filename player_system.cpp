@@ -8,28 +8,16 @@ namespace htn {
 
 void update_players(World& world, Input& input) {
     for (auto& e : world) {
-        if (!e.player || !e.platformer || !e.body) {
+        if (!e.player || !e.top_down || !e.body) {
             continue;
         }
 
-        e.platformer->left = input.key_held('A') || input.key_held(Input::LEFT);
-        e.platformer->right = input.key_held('D') || input.key_held(Input::RIGHT);
-        e.platformer->jump = input.key_held('W') || input.key_held(Input::UP);
+        e.top_down->left = input.key_held('A') || input.key_held(Input::LEFT);
+        e.top_down->right = input.key_held('D') || input.key_held(Input::RIGHT);
+        e.top_down->up = input.key_held('W') || input.key_held(Input::UP);
+        e.top_down->down = input.key_held('S') || input.key_held(Input::DOWN);
 
-        e.platformer->speed = HTN_TWEAK(2);
-        e.platformer->jump_accel = HTN_TWEAK(3);
-
-        if (input.key_down('Z') || input.key_down('J')) {
-            float middle = e.body->rect.y + e.body->rect.h / 2 - 3 + HTN_TWEAK(2.5);
-
-            if (e.platformer->facing_left) {
-                world.add_next_frame(
-                    create_bullet({e.body->rect.x - HTN_TWEAK(10), middle}, true, true));
-            } else {
-                world.add_next_frame(create_bullet(
-                    {e.body->rect.x + e.body->rect.w - HTN_TWEAK(2), middle}, false, true));
-            }
-        }
+        e.top_down->speed = HTN_TWEAK(2);
     }
 }
 

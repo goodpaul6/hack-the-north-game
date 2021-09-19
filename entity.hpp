@@ -14,6 +14,7 @@
 #include "platformer_component.hpp"
 #include "player_component.hpp"
 #include "remove_after_duration_component.hpp"
+#include "top_down_component.hpp"
 
 namespace htn {
 
@@ -36,6 +37,7 @@ struct Entity {
     std::optional<RemoveAfterDurationComponent> remove_after_duration;
     std::optional<HealthRegenComponent> health_regen;
     std::optional<ParticleEmitterComponent> particle_emitter;
+    std::optional<TopDownComponent> top_down;
 
     Entity();
 
