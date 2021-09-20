@@ -53,7 +53,7 @@ void WaterSim::wall(int x, int y) {
 }
 
 void WaterSim::simulate() {
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < static_cast<int>(HTN_TWEAK(10)); ++i) {
         for (int y = 0; y < m_height; ++y) {
             for (int x = 0; x < m_width; ++x) {
                 auto& v = m_data[x + y * m_width];
