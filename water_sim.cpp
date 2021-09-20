@@ -117,8 +117,8 @@ void WaterSim::render(Renderer& r, Vec2f offset) {
             float avg = 0;
             int count = 0;
 
-            for (int yy = -1; yy <= 1; ++yy) {
-                for (int xx = -1; xx <= 1; ++xx) {
+            for (int yy = -2; yy <= 2; ++yy) {
+                for (int xx = -2; xx <= 2; ++xx) {
                     if ((xx == 0 && yy == 0) || (x + xx < 0 || x + xx >= m_width) ||
                         (y + yy < 0 || y + yy >= m_height)) {
                         continue;
@@ -131,23 +131,15 @@ void WaterSim::render(Renderer& r, Vec2f offset) {
 
             Vec2f pos{static_cast<float>(x) + offset.x, static_cast<float>(y) + offset.y};
 
-            auto translucent_level = HTN_TWEAK(0.2);
-
-            if (v > translucent_level) {
-                r.blit(bg_image, pos);
-            } else {
-                r.blit(bg_image, pos, v / translucent_level);
+            if (v >= 0) {
+                r.blit(bg_image, pos, std::min(v * HTN_TWEAK(4), 1.0f));
             }
 
             avg /= count;
 
             float dv = std::abs(v - avg);
 
-            if (dv > HTN_TWEAK(0.05)) {
-                r.blit(medium_image, pos, v > avg ? 1 : 0.5f);
-            } else {
-                r.blit(medium_image, pos, v);
-            }
+            r.blit(medium_image, pos, std::max(v - dv, 0.0f));
         }
     }
 }
