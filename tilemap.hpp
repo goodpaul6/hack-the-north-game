@@ -19,6 +19,7 @@ struct Tilemap {
         std::string type;
         FloatRect rect;
         float rotation = 0;
+        std::vector<Vec2f> polygon;
     };
 
     struct TileLayer {

@@ -107,29 +107,76 @@ Tilemap::Tilemap(const std::string& filename) {
 
                 auto found_gid = js_object.find("gid");
 
-                Object object;
+                Object obj;
 
-                object.id = static_cast<int>(js_object.at("id").get<double>());
+                obj.id = static_cast<int>(js_object.at("id").get<double>());
 
-                object.name = js_object.at("name").get<std::string>();
+                obj.name = js_object.at("name").get<std::string>();
 
-                object.rect.x = static_cast<float>(js_object.at("x").get<double>());
-                object.rect.y = static_cast<float>(js_object.at("y").get<double>());
-                object.rect.w = static_cast<float>(js_object.at("width").get<double>());
-                object.rect.h = static_cast<float>(js_object.at("height").get<double>());
+                obj.rect.x = static_cast<float>(js_object.at("x").get<double>());
+                obj.rect.y = static_cast<float>(js_object.at("y").get<double>());
+                obj.rect.w = static_cast<float>(js_object.at("width").get<double>());
+                obj.rect.h = static_cast<float>(js_object.at("height").get<double>());
 
-                object.rotation = static_cast<float>(js_object.at("rotation").get<double>());
+                obj.rotation = static_cast<float>(js_object.at("rotation").get<double>());
 
-                if (found_gid != js_object.end()) {
-                    object.type =
-                        object_gid_to_type[static_cast<int>(found_gid->second.get<double>())];
+                auto found_polygon = js_object.find("polygon");
 
-                    object.rect.y -= object.rect.h;
-                } else {
-                    object.type = js_object.at("type").get<std::string>();
+                if (found_polygon != js_object.end()) {
+                    auto& js_polygon = found_polygon->second.get<array>();
+
+                    obj.polygon.reserve(js_polygon.size());
+
+                    Vec2f min;
+                    Vec2f max;
+
+                    for (auto& js_point_value : js_polygon) {
+                        auto& js_point = js_point_value.get<object>();
+
+                        obj.polygon.emplace_back(
+                            static_cast<float>(js_point.at("x").get<double>()),
+                            static_cast<float>(js_point.at("y").get<double>()));
+
+                        auto p = obj.polygon.back();
+
+                        if (p.x < min.x) {
+                            min.x = p.x;
+                        }
+
+                        if (p.y < min.y) {
+                            min.y = p.y;
+                        }
+
+                        if (p.x > max.x) {
+                            max.x = p.x;
+                        }
+
+                        if (p.y > max.y) {
+                            max.y = p.y;
+                        }
+                    }
+
+                    // Center all points at 0, 0
+                    for (auto& p : obj.polygon) {
+                        p -= min;
+                    }
+
+                    obj.rect.x += min.x;
+                    obj.rect.y += min.y;
+                    obj.rect.w = max.x - min.x;
+                    obj.rect.h = max.y - min.y;
                 }
 
-                object_layer.objects.emplace_back(std::move(object));
+                if (found_gid != js_object.end()) {
+                    obj.type =
+                        object_gid_to_type[static_cast<int>(found_gid->second.get<double>())];
+
+                    obj.rect.y -= obj.rect.h;
+                } else {
+                    obj.type = js_object.at("type").get<std::string>();
+                }
+
+                object_layer.objects.emplace_back(std::move(obj));
             }
 
             m_object_layers.emplace_back(std::move(object_layer));

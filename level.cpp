@@ -24,6 +24,30 @@
 #include "water_resource_system.hpp"
 #include "world.hpp"
 
+namespace {
+
+// Shamelessly taken from https://stackoverflow.com/a/15599478
+bool point_in_polygon(htn::Vec2f point, const std::vector<htn::Vec2f>& points) {
+    if (points.empty()) {
+        return false;
+    }
+
+    bool c = false;
+
+    for (int i = 0, j = points.size() - 1; i < points.size(); j = i++) {
+        if (((points[i].y >= point.y) != (points[j].y >= point.y)) &&
+            (point.x <=
+             (points[j].x - points[i].x) * (point.y - points[i].y) / (points[j].y - points[i].y) +
+                 points[i].x)) {
+            c = !c;
+        }
+    }
+
+    return c;
+}
+
+}  // namespace
+
 namespace htn {
 
 Level::Level() : m_tilemap{"data/level.json"} {
@@ -41,6 +65,30 @@ Level::Level() : m_tilemap{"data/level.json"} {
 
                 m_world.add_next_frame(std::move(entity));
             }
+        } else if (object_layer.name == "water_resources") {
+            for (const auto& object : object_layer.objects) {
+                Entity entity;
+
+                int w = static_cast<int>(object.rect.w);
+                int h = static_cast<int>(object.rect.h);
+
+                WaterResourceComponent water_resource{w, h};
+
+                for (int y = 0; y < h; ++y) {
+                    for (int x = 0; x < w; ++x) {
+                        if (!point_in_polygon({x, y}, object.polygon)) {
+                            water_resource.sim.wall(x, y);
+                        } else {
+                            water_resource.sim.set(x, y, INT8_MAX);
+                        }
+                    }
+                }
+
+                entity.fixed_pos = object.rect.pos();
+                entity.water_resource = std::move(water_resource);
+
+                m_world.add_next_frame(std::move(entity));
+            }
         } else {
             for (const auto& object : object_layer.objects) {
                 if (object.type == "player") {
@@ -49,16 +97,6 @@ Level::Level() : m_tilemap{"data/level.json"} {
                     m_player_id = player.id();
 
                     m_world.add_next_frame(std::move(player));
-                } else if (object.type == "water_resource") {
-                    Entity entity;
-
-                    WaterResourceComponent water_resource{static_cast<int>(object.rect.w),
-                                                          static_cast<int>(object.rect.h)};
-
-                    entity.fixed_pos = object.rect.pos();
-                    entity.water_resource = std::move(water_resource);
-
-                    m_world.add_next_frame(std::move(entity));
                 }
             }
         }

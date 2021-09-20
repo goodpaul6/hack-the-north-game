@@ -10,13 +10,7 @@
 namespace htn {
 
 WaterSim::WaterSim(int width, int height)
-    : m_width{width}, m_height{height}, m_data(width * height, 0) {
-    for (int y = 0; y < height; ++y) {
-        for (int x = 0; x < width; ++x) {
-            m_data[x + y * width] = std::rand() % INT8_MAX;
-        }
-    }
-}
+    : m_width{width}, m_height{height}, m_data(width * height, 0) {}
 
 int WaterSim::get(int x, int y) const {
     if (x < 0 || x >= m_width) {
