@@ -111,7 +111,7 @@ void update_bodies(World& world, Vec2f grav_accel) {
             return true;
         };
 
-        for (int i = 0; i < sample_count; ++i) {
+        for (auto i = 0u; i < sample_count; ++i) {
             auto* b = collide_rect(world, new_rect.moved({dx, 0}), &a);
 
             if (!b || !handle_collision(*b, true)) {
@@ -123,7 +123,7 @@ void update_bodies(World& world, Vec2f grav_accel) {
             break;
         }
 
-        for (int i = 0; i < sample_count; ++i) {
+        for (auto i = 0u; i < sample_count; ++i) {
             auto* b = collide_rect(world, new_rect.moved({0, dy}), &a);
 
             if (!b || !handle_collision(*b, false)) {

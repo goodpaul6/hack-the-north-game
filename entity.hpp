@@ -15,6 +15,7 @@
 #include "player_component.hpp"
 #include "remove_after_duration_component.hpp"
 #include "top_down_component.hpp"
+#include "water_resource_component.hpp"
 
 namespace htn {
 
@@ -38,6 +39,7 @@ struct Entity {
     std::optional<HealthRegenComponent> health_regen;
     std::optional<ParticleEmitterComponent> particle_emitter;
     std::optional<TopDownComponent> top_down;
+    std::optional<WaterResourceComponent> water_resource;
 
     Entity();
 

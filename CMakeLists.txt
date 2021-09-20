@@ -43,7 +43,10 @@ set(SOURCES
     level.cpp
     particle_manager.cpp
     particle_emitter_system.cpp
-    top_down_system.cpp)
+    top_down_system.cpp
+    water_resource_system.cpp
+    water_resource_component.cpp
+    water_sim.cpp)
 
 add_executable(game ${SOURCES})
 

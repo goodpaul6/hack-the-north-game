@@ -23,6 +23,9 @@ inline Color TRANSPARENT{0, 0, 0, 0};
 inline Color RED{0xff, 0, 0, 0xff};
 inline Color GREEN{0, 0xff, 0, 0xff};
 inline Color BLUE{0, 0, 0xff, 0xff};
+inline Color WATER_BACKGROUND_COLOR{215, 155, 125, 255};
+inline Color MEDIUM_WATER_BLUE{52, 133, 157, 255};
+inline Color LIGHT_WATER_BLUE{126, 196, 193, 255};
 
 inline bool operator==(const Color& a, const Color& b) {
     return a.r == b.r && a.g == b.g && a.b == b.b && a.a == b.a;

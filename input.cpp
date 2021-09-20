@@ -10,4 +10,12 @@ bool Input::key_down(int key) { return tigrKeyDown(m_screen, key); }
 
 bool Input::key_held(int key) { return tigrKeyHeld(m_screen, key); }
 
+Input::MouseState Input::mouse_state() {
+    MouseState state;
+
+    tigrMouse(m_screen, &state.pos.x, &state.pos.y, &state.buttons);
+
+    return state;
+}
+
 }  // namespace htn

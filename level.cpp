@@ -21,6 +21,7 @@
 #include "time.hpp"
 #include "top_down_system.hpp"
 #include "tweaker.hpp"
+#include "water_resource_system.hpp"
 #include "world.hpp"
 
 namespace htn {
@@ -48,6 +49,16 @@ Level::Level() : m_tilemap{"data/level.json"} {
                     m_player_id = player.id();
 
                     m_world.add_next_frame(std::move(player));
+                } else if (object.type == "water_resource") {
+                    Entity entity;
+
+                    WaterResourceComponent water_resource{static_cast<int>(object.rect.w),
+                                                          static_cast<int>(object.rect.h)};
+
+                    entity.fixed_pos = object.rect.pos();
+                    entity.water_resource = std::move(water_resource);
+
+                    m_world.add_next_frame(std::move(entity));
                 }
             }
         }
@@ -66,12 +77,13 @@ void Level::fixed_update(Input& input, Vec2f view_size) {
     Vec2f grav_accel{0, HTN_TWEAK(0.1)};
 
     update_ground_movers(m_world);
-    update_players(m_world, input);
+    update_players(m_world, input, m_render_system.camera_offset());
     update_platformers(m_world);
     update_top_downs(m_world);
     update_bullets(m_world);
     update_bodies(m_world, grav_accel);
     update_particle_emitters(m_world, grav_accel);
+    update_water_resources(m_world);
 
     m_render_system.update_camera_offset(m_world, view_size, m_player_id);
 }

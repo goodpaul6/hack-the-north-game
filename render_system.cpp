@@ -63,6 +63,10 @@ void RenderSystem::render(World& world, Renderer& r, bool debug_bodies,
             r.blit(*e.image->image, pos + e.image->offset, e.image->src, show ? e.image->alpha : 0,
                    e.image->flip);
         }
+
+        if (e.water_resource) {
+            e.water_resource->sim.render(r, pos);
+        }
     }
 }
 
